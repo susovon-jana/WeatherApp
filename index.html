@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Weather App</title>
+    <title>SkyCast - Modern Weather</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,15 +15,28 @@
 </head>
 <body>
     <div class="app-container">
+        
         <header class="top-header">
-            <div class="greeting-container">
-                <h1 id="dynamic-greeting">Hello!</h1>
-                <p class="date-display" id="current-date"></p>
+            
+            <div class="brand-and-controls">
+                <div class="app-branding">
+                    <svg viewBox="0 0 100 100" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="65" cy="40" r="22" fill="#facc15" />
+                        <circle cx="65" cy="40" r="30" fill="#fef08a" opacity="0.3" />
+                        <path d="M 25 75 A 18 18 0 0 1 25 39 A 24 24 0 0 1 72 39 A 18 18 0 0 1 72 75 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" />
+                    </svg>
+                    <h1 class="app-name">SkyCast</h1>
+                </div>
+
+                <div class="global-controls">
+                    <button id="unit-toggle" class="control-btn" title="Toggle °C / °F">°C</button>
+                    <button id="theme-toggle" class="control-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                </div>
             </div>
 
-            <div class="global-controls">
-                <button id="unit-toggle" class="control-btn" title="Toggle °C / °F">°C</button>
-                <button id="theme-toggle" class="control-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+            <div class="greeting-container">
+                <p class="date-display" id="current-date"></p>
+                <span id="dynamic-greeting" style="font-weight: 600; color: var(--text-muted);">Hello!</span>
             </div>
 
             <a href="https://dr-susovon.pages.dev" target="_blank" class="profile-widget">
@@ -40,21 +53,20 @@
         <nav class="locations-nav glass-panel">
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>
-                <input type="text" id="city-search" placeholder="Search city..." autocomplete="off">
+                <input type="text" id="city-search" placeholder="Search city or area..." autocomplete="off">
                 <button id="gps-btn" title="Use Current Location"><i class="fas fa-location-crosshairs"></i></button>
             </div>
             
-            <div class="quick-cities" id="indian-cities-container">
-                </div>
+            <div class="quick-cities" id="indian-cities-container"></div>
             
             <div class="dropdowns-container">
                 <select id="global-capitals" class="custom-select">
                     <option value="" disabled selected>Global Capitals</option>
-                    </select>
+                </select>
                 
                 <select id="favorite-locations" class="custom-select">
                     <option value="" disabled selected>Saved Favorites</option>
-                    </select>
+                </select>
             </div>
         </nav>
 
@@ -138,8 +150,7 @@
 
         <section class="forecast-section glass-panel">
             <h3>14-Day Forecast</h3>
-            <div class="forecast-scroll" id="forecast-container">
-                </div>
+            <div class="forecast-scroll" id="forecast-container"></div>
         </section>
     </div>
 

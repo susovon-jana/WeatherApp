@@ -18,7 +18,6 @@ const DOM = {
     compareResults: document.getElementById('compare-results')
 };
 
-// Global variable to store current real data for unit switching
 let currentWeatherData = null; 
 
 function init() {
@@ -39,7 +38,7 @@ function setGreetingAndDate() {
     let greeting = 'Good Evening';
     if (hour < 12) greeting = 'Good Morning';
     else if (hour < 18) greeting = 'Good Afternoon';
-    DOM.greeting.innerText = `Hello, ${greeting}!`;
+    DOM.greeting.innerText = `${greeting}!`;
     DOM.date.innerText = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
 
@@ -57,7 +56,6 @@ function populateStaticLists() {
     });
 }
 
-// --- WMO Weather Code to Icon & Text Mapping ---
 function getWeatherDetails(code) {
     const conditions = {
         0: { text: "Clear Sky", icon: "fa-sun" },
@@ -82,11 +80,9 @@ function getWeatherDetails(code) {
     return conditions[code] || { text: "Unknown", icon: "fa-cloud" };
 }
 
-// --- Conversions ---
 const convertTemp = (celsius) => CONFIG.isMetric ? Math.round(celsius) : Math.round((celsius * 9/5) + 32);
 const convertWind = (kmh) => CONFIG.isMetric ? kmh : (kmh * 0.621371).toFixed(1);
 
-// --- Live API Fetching (Open-Meteo & Nominatim) ---
 async function fetchCoordinates(cityName) {
     document.getElementById('current-location-name').innerText = `Searching ${cityName}...`;
     try {
@@ -95,7 +91,6 @@ async function fetchCoordinates(cityName) {
         if (!data.results) throw new Error("City not found");
         
         const loc = data.results[0];
-        // Construct basic name from geocoding
         let locationString = `${loc.name}`;
         if(loc.admin1) locationString += `, ${loc.admin1}`;
         if(loc.country) locationString += `, ${loc.country}`;
@@ -110,17 +105,13 @@ async function fetchCoordinates(cityName) {
 async function getLiveWeatherData(lat, lon, locationName) {
     document.getElementById('current-temp').innerText = '...';
     try {
-        // 1. Fetch Weather Data (14 days, hourly humidity for avg, min/max temps)
         const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset&hourly=relative_humidity_2m&timezone=auto&forecast_days=14`;
-        
-        // 2. Fetch AQI
         const aqiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5,us_aqi`;
         
         const [weatherRes, aqiRes] = await Promise.all([fetch(weatherUrl), fetch(aqiUrl)]);
         const weather = await weatherRes.json();
         const aqi = await aqiRes.json();
 
-        // Process Data
         currentWeatherData = {
             location: locationName,
             current: {
@@ -143,9 +134,7 @@ async function getLiveWeatherData(lat, lon, locationName) {
             forecast: []
         };
 
-        // Process 14 day forecast and average daily humidity from hourly data
         for(let i = 0; i < 14; i++) {
-            // calculate avg humidity for the day (24 hours slices)
             const hourlyHumidities = weather.hourly.relative_humidity_2m.slice(i*24, (i+1)*24);
             const avgHumidity = Math.round(hourlyHumidities.reduce((a, b) => a + b, 0) / 24);
             
@@ -165,7 +154,7 @@ async function getLiveWeatherData(lat, lon, locationName) {
     }
 }
 
-// --- GPS Detailed Reverse Geocoding ---
+// --- UPDATED GPS LOGIC ---
 function handleGPS() {
     if (navigator.geolocation) {
         document.getElementById('current-location-name').innerText = "Locating GPS...";
@@ -175,37 +164,36 @@ function handleGPS() {
                 const lon = position.coords.longitude;
                 
                 try {
-                    // Use Nominatim for detailed string: Area, Pincode, District, State, Country
+                    // Fetch full address details
                     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`);
                     const data = await res.json();
                     
                     let locName = "Current Location";
-                    if(data && data.address) {
-                        const a = data.address;
-                        const area = a.suburb || a.neighbourhood || a.village || a.town || a.city || '';
-                        const pin = a.postcode || '';
-                        const dist = a.state_district || a.county || '';
-                        const state = a.state || '';
-                        const country = a.country || '';
-                        
-                        // Filter out empty parts and construct clean string
-                        const parts = [area, pin, dist, state, country].filter(p => p !== '');
-                        locName = parts.join(', ');
+                    
+                    if(data && data.display_name) {
+                        locName = data.display_name; // Extracts exact comma-separated area string
                     }
+
+                    // Strict Regex to Strip Google Plus Codes (e.g., "QG7W+F88,")
+                    // Targets 4-8 uppercase letters/numbers + "+" + 2-3 letters/numbers, followed by optional comma and space
+                    locName = locName.replace(/\b[A-Z0-9]{4,8}\+[A-Z0-9]{2,3}(?:,\s*)?/g, '').trim();
+                    
+                    // Cleanup any stray commas at the start or end
+                    locName = locName.replace(/^,\s*/, '').replace(/,\s*$/, '');
+
                     getLiveWeatherData(lat, lon, locName);
                 } catch(e) {
                     console.log("Nominatim failed, falling back to coords", e);
                     getLiveWeatherData(lat, lon, "GPS Location");
                 }
             },
-            () => fetchCoordinates("New Delhi") // Fallback
+            () => fetchCoordinates("New Delhi") 
         );
     } else {
         fetchCoordinates("New Delhi");
     }
 }
 
-// --- Rendering Engine ---
 function renderDashboard() {
     if(!currentWeatherData) return;
     const data = currentWeatherData;
@@ -225,7 +213,6 @@ function renderDashboard() {
     document.getElementById('sun-times').innerText = `${data.current.sunrise} / ${data.current.sunset}`;
     document.getElementById('current-precip').innerText = `${data.current.precip} mm`;
 
-    // AQI rendering
     const aqiVal = data.aqi.us_aqi;
     document.getElementById('aqi-value').innerText = aqiVal;
     let aqiText = 'Good', aqiColor = '#10b981';
@@ -238,7 +225,6 @@ function renderDashboard() {
     document.getElementById('pm25-val').innerText = data.aqi.pm25;
     document.getElementById('pm10-val').innerText = data.aqi.pm10;
 
-    // Unit Symbols
     document.querySelectorAll('.unit-symbol').forEach(el => el.innerText = CONFIG.isMetric ? '°C' : '°F');
 
     renderForecast();
@@ -266,7 +252,6 @@ function renderForecast() {
     });
 }
 
-// --- Features: Favorites, Compare ---
 function checkFavoriteState() {
     const currentLoc = document.getElementById('current-location-name').innerText;
     if(DATA.favorites.includes(currentLoc)) {
@@ -279,10 +264,10 @@ function checkFavoriteState() {
 function handleSaveFavorite() {
     const currentCity = document.getElementById('current-location-name').innerText;
     if (DATA.favorites.includes(currentCity)) {
-        DATA.favorites = DATA.favorites.filter(c => c !== currentCity); // Remove
+        DATA.favorites = DATA.favorites.filter(c => c !== currentCity); 
     } else {
         if (DATA.favorites.length >= 5) return alert("You can only save up to 5 favorite locations.");
-        DATA.favorites.push(currentCity); // Add
+        DATA.favorites.push(currentCity); 
     }
     localStorage.setItem('weatherFavorites', JSON.stringify(DATA.favorites));
     renderFavoritesDropdown();
@@ -305,7 +290,6 @@ function handleCompare() {
     DOM.compareResults.classList.remove('hidden');
     DOM.compareResults.innerHTML = '<p>Fetching data for comparison...</p>';
     
-    // Quick dual fetch logic
     Promise.all([
         fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city1}&count=1`).then(r=>r.json()),
         fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city2}&count=1`).then(r=>r.json())
@@ -331,7 +315,6 @@ function handleCompare() {
     }).catch(e => DOM.compareResults.innerHTML = `<p>Error fetching comparison data.</p>`);
 }
 
-// --- Event Listeners ---
 function setupEventListeners() {
     DOM.themeToggle.addEventListener('click', () => {
         const root = document.documentElement;
@@ -343,7 +326,7 @@ function setupEventListeners() {
     DOM.unitToggle.addEventListener('click', () => {
         CONFIG.isMetric = !CONFIG.isMetric;
         DOM.unitToggle.innerText = CONFIG.isMetric ? '°C' : '°F';
-        renderDashboard(); // Re-render instantly without refetching API
+        renderDashboard(); 
     });
 
     DOM.searchInput.addEventListener('keypress', (e) => {
