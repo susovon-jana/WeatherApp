@@ -1,0 +1,134 @@
+/* ════════════════════════════════════════════════════════
+   animations.css — Keyframes & Transition Effects
+   SkyCast Advanced Weather App
+   ════════════════════════════════════════════════════════ */
+
+/* ── LOADER ─────────────────────────────────────────────── */
+@keyframes pulse-icon {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.1); opacity: 0.75; }
+}
+
+@keyframes loader-progress {
+    0%   { width: 0%; }
+    60%  { width: 75%; }
+    100% { width: 100%; }
+}
+
+/* ── ENTRY / REVEAL ─────────────────────────────────────── */
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes scale-in {
+    from { opacity: 0; transform: scale(0.93); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── AMBIENT ORBS ───────────────────────────────────────── */
+@keyframes orb-drift-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(40px, -30px) scale(1.05); }
+    66%       { transform: translate(-20px, 20px) scale(0.97); }
+}
+@keyframes orb-drift-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%       { transform: translate(-50px, 30px) scale(1.08); }
+}
+@keyframes orb-drift-3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%       { transform: translate(-48%, -52%) scale(1.06); }
+}
+
+.orb-1 { animation: orb-drift-1 18s ease-in-out infinite; }
+.orb-2 { animation: orb-drift-2 22s ease-in-out infinite; }
+.orb-3 { animation: orb-drift-3 26s ease-in-out infinite; }
+
+/* ── WEATHER ICON ───────────────────────────────────────── */
+@keyframes icon-float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+}
+.hero-icon { animation: icon-float 3.5s ease-in-out infinite; }
+
+/* ── SUN PULSE ──────────────────────────────────────────── */
+@keyframes sun-pulse {
+    0%, 100% { box-shadow: 0 0 8px #facc1580; }
+    50%       { box-shadow: 0 0 18px #facc15cc; }
+}
+.sun-dot { animation: sun-pulse 2.5s ease-in-out infinite; }
+
+/* ── GPS BUTTON SPIN ────────────────────────────────────── */
+@keyframes spin-once {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+.gps-btn.locating i { animation: spin-once 1s linear infinite; }
+
+/* ── FORECAST CARD STAGGER ──────────────────────────────── */
+.forecast-card:nth-child(1)  { animation: fade-up 0.3s ease both; animation-delay: 0.05s; }
+.forecast-card:nth-child(2)  { animation: fade-up 0.3s ease both; animation-delay: 0.10s; }
+.forecast-card:nth-child(3)  { animation: fade-up 0.3s ease both; animation-delay: 0.15s; }
+.forecast-card:nth-child(4)  { animation: fade-up 0.3s ease both; animation-delay: 0.20s; }
+.forecast-card:nth-child(5)  { animation: fade-up 0.3s ease both; animation-delay: 0.25s; }
+.forecast-card:nth-child(6)  { animation: fade-up 0.3s ease both; animation-delay: 0.30s; }
+.forecast-card:nth-child(7)  { animation: fade-up 0.3s ease both; animation-delay: 0.35s; }
+.forecast-card:nth-child(8)  { animation: fade-up 0.3s ease both; animation-delay: 0.38s; }
+.forecast-card:nth-child(9)  { animation: fade-up 0.3s ease both; animation-delay: 0.40s; }
+.forecast-card:nth-child(10) { animation: fade-up 0.3s ease both; animation-delay: 0.42s; }
+.forecast-card:nth-child(11) { animation: fade-up 0.3s ease both; animation-delay: 0.44s; }
+.forecast-card:nth-child(12) { animation: fade-up 0.3s ease both; animation-delay: 0.46s; }
+.forecast-card:nth-child(13) { animation: fade-up 0.3s ease both; animation-delay: 0.48s; }
+.forecast-card:nth-child(14) { animation: fade-up 0.3s ease both; animation-delay: 0.50s; }
+
+/* ── HOURLY CARD STAGGER ────────────────────────────────── */
+.hourly-card { animation: fade-in 0.25s ease both; }
+
+/* ── METRIC CARD REVEAL ─────────────────────────────────── */
+.metric-card:nth-child(1) { animation: scale-in 0.35s ease both 0.1s; }
+.metric-card:nth-child(2) { animation: scale-in 0.35s ease both 0.15s; }
+.metric-card:nth-child(3) { animation: scale-in 0.35s ease both 0.2s; }
+.metric-card:nth-child(4) { animation: scale-in 0.35s ease both 0.25s; }
+.metric-card:nth-child(5) { animation: scale-in 0.35s ease both 0.3s; }
+.metric-card:nth-child(6) { animation: scale-in 0.35s ease both 0.35s; }
+
+/* ── TEMPERATURE NUMBER POP ─────────────────────────────── */
+@keyframes temp-pop {
+    0%   { transform: scale(0.9); opacity: 0; }
+    70%  { transform: scale(1.03); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.temp-value.updated { animation: temp-pop 0.4s ease forwards; }
+
+/* ── HEART PULSE (favorite) ─────────────────────────────── */
+@keyframes heart-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+}
+.fav-btn.popped i { animation: heart-pop 0.35s ease; }
+
+/* ── COMPARE RESULTS SLIDE IN ───────────────────────────── */
+@keyframes slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.compare-results:not(.hidden) { animation: slide-down 0.3s ease; }
+
+/* ── AQI RING DRAW ──────────────────────────────────────── */
+/* Handled via JS setting stroke-dashoffset */
+
+/* ── REDUCE MOTION ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

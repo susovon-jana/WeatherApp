@@ -1,0 +1,217 @@
+/* ════════════════════════════════════════════════════════
+   responsive.css — Mobile, Tablet, Landscape Breakpoints
+   SkyCast Advanced Weather App
+   ════════════════════════════════════════════════════════ */
+
+/* ── LARGE SCREENS (≤1200px) ────────────────────────────── */
+@media (max-width: 1200px) {
+    .dashboard {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        grid-template-rows: auto auto auto;
+    }
+    .hero-card    { grid-column: 1; grid-row: 1 / 3; }
+    .metrics-panel { grid-column: 2; grid-row: 1; }
+    .aqi-card     { grid-column: 2; grid-row: 2; }
+    .compare-card { grid-column: 1 / -1; grid-row: 3; }
+
+    .metrics-panel { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── TABLET LANDSCAPE (≤1024px) ─────────────────────────── */
+@media (max-width: 1024px) {
+    .app-wrapper { padding: 0 16px 32px; }
+
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+    }
+    .hero-card    { grid-column: 1 / -1; grid-row: auto; }
+    .metrics-panel { grid-column: 1 / -1; grid-row: auto; grid-template-columns: repeat(3, 1fr); }
+    .aqi-card     { grid-column: 1; grid-row: auto; }
+    .compare-card { grid-column: 2; grid-row: auto; }
+
+    /* Hero layout in tablet */
+    .temp-value { font-size: 5rem; }
+    .hero-icon  { font-size: 4rem; }
+
+    .profile-chip span { display: none; }
+    .profile-chip { padding: 8px 10px; }
+}
+
+/* ── TABLET PORTRAIT (≤768px) ───────────────────────────── */
+@media (max-width: 768px) {
+    .app-wrapper { padding: 0 12px 24px; gap: 12px; }
+
+    /* ── HEADER ── */
+    .top-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .header-left {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .header-greeting { display: none; }
+
+    .header-right {
+        width: 100%;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .search-bar { max-width: 100%; }
+    .header-controls { gap: 6px; }
+    .profile-chip { display: none; }
+
+    /* ── NAV ── */
+    .quick-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+    }
+    .nav-selects {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .styled-select { max-width: 100%; width: 100%; }
+
+    /* ── DASHBOARD ── */
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+    .hero-card    { grid-column: 1; grid-row: auto; }
+    .metrics-panel { grid-column: 1; grid-row: auto; grid-template-columns: repeat(2, 1fr); }
+    .aqi-card     { grid-column: 1; grid-row: auto; }
+    .compare-card { grid-column: 1; grid-row: auto; }
+
+    /* ── HERO ── */
+    .hero-card { padding: 18px; }
+    .location-name { font-size: 1.15rem; }
+    .temp-value { font-size: 4.5rem; }
+    .hero-icon  { font-size: 3.5rem; }
+    .unit-symbol { font-size: 1.7rem; margin-top: 12px; }
+
+    /* Sun bar compact */
+    .sun-bar { padding: 10px 12px; }
+    .sun-time { font-size: 0.82rem; }
+
+    /* ── METRICS ── */
+    .metric-val { font-size: 1.1rem; }
+
+    /* ── AQI ── */
+    .aqi-body { flex-direction: column; align-items: flex-start; }
+    .aqi-ring { width: 80px; height: 80px; }
+    .aqi-num  { font-size: 1.4rem; }
+
+    /* ── COMPARE ── */
+    .compare-inputs { gap: 8px; }
+
+    /* ── FORECAST ── */
+    .forecast-section { padding: 16px; }
+    .hourly-card { min-width: 64px; }
+    .forecast-card { min-width: 112px; }
+
+    /* ── FOOTER ── */
+    .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-info  { text-align: center; }
+    .footer-links { justify-content: center; }
+    .footer-brand { justify-content: center; }
+}
+
+/* ── MOBILE (≤480px) ────────────────────────────────────── */
+@media (max-width: 480px) {
+    .app-wrapper { padding: 0 10px 20px; gap: 10px; }
+
+    .brand-name { font-size: 1.3rem; }
+
+    .metrics-panel { grid-template-columns: 1fr 1fr; }
+
+    .temp-value   { font-size: 4rem; letter-spacing: -3px; }
+    .hero-icon    { font-size: 3rem; }
+    .unit-symbol  { font-size: 1.5rem; margin-top: 10px; }
+    .location-name { font-size: 1rem; }
+
+    /* 3 metrics per row on small mobile */
+    .pollutant-row { grid-template-columns: 36px 1fr 30px 38px; gap: 5px; }
+
+    .compare-results { grid-template-columns: 1fr 1fr; }
+    .cmp-temp { font-size: 1.6rem; }
+
+    .forecast-card { min-width: 100px; padding: 12px 8px; }
+    .fc-icon { font-size: 1.5rem; }
+    .hourly-card { min-width: 58px; padding: 10px 6px; }
+
+    .ctrl-btn { width: 34px; height: 34px; font-size: 0.78rem; }
+}
+
+/* ── LANDSCAPE PHONE (≤ 768px, landscape) ───────────────── */
+@media (max-width: 768px) and (orientation: landscape) {
+    .top-header {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 8px 12px;
+    }
+
+    .header-left  { flex-shrink: 0; }
+    .header-right { flex: 1; min-width: 0; }
+    .header-greeting { display: flex; }
+
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+    }
+    .hero-card    { grid-column: 1 / -1; grid-row: auto; }
+    .metrics-panel {
+        grid-column: 1 / -1; grid-row: auto;
+        grid-template-columns: repeat(6, 1fr);
+    }
+    .aqi-card     { grid-column: 1; grid-row: auto; }
+    .compare-card { grid-column: 2; grid-row: auto; }
+
+    .temp-value { font-size: 3.5rem; }
+    .hero-icon  { font-size: 3rem; }
+    .hero-card  { padding: 16px; gap: 14px; }
+
+    /* Compact sun bar */
+    .sun-label { display: none; }
+    .sun-bar   { padding: 8px 12px; }
+
+    /* Metrics row in landscape */
+    .metric-card { padding: 12px; }
+    .metric-val  { font-size: 1rem; }
+
+    .aqi-body { flex-direction: row; }
+    .aqi-ring { width: 72px; height: 72px; }
+}
+
+/* ── TABLET LANDSCAPE (768–1024px, landscape) ───────────── */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+    .dashboard {
+        grid-template-columns: 1.2fr 1fr 1fr;
+    }
+    .hero-card    { grid-column: 1; grid-row: 1 / 3; }
+    .metrics-panel {
+        grid-column: 2 / 4; grid-row: 1;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .aqi-card     { grid-column: 2; grid-row: 2; }
+    .compare-card { grid-column: 3; grid-row: 2; }
+}
+
+/* ── SAFE AREAS (iPhone notch etc.) ─────────────────────── */
+@supports (padding: max(0px)) {
+    .top-header {
+        padding-left:  max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+    }
+    .app-wrapper {
+        padding-left:  max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
+    }
+}

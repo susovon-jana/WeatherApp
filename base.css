@@ -1,0 +1,176 @@
+/* ════════════════════════════════════════════════════════
+   base.css — CSS Variables, Resets & Typography
+   SkyCast Advanced Weather App
+   ════════════════════════════════════════════════════════ */
+
+/* ── THEME: DARK ────────────────────────────────────────── */
+:root,
+:root[data-theme="dark"] {
+    /* Background Layers */
+    --bg-base:        #060c18;
+    --bg-surface:     #0d1526;
+    --bg-elevated:    #141f35;
+
+    /* Glass Effect */
+    --glass-bg:       rgba(14, 22, 45, 0.65);
+    --glass-border:   rgba(255, 255, 255, 0.07);
+    --glass-shadow:   0 8px 40px rgba(0, 0, 0, 0.45);
+    --glass-blur:     16px;
+
+    /* Text */
+    --text-primary:   #e8f0fe;
+    --text-secondary: #7a92b4;
+    --text-muted:     #44587a;
+    --text-accent:    #60a5fa;
+
+    /* Accent / Brand */
+    --accent:         #3b82f6;
+    --accent-glow:    rgba(59, 130, 246, 0.3);
+    --accent-hover:   #60a5fa;
+
+    /* Status Colors */
+    --color-good:     #10b981;
+    --color-moderate: #f59e0b;
+    --color-bad:      #ef4444;
+    --color-hazard:   #7c3aed;
+
+    /* Orbs (ambient) */
+    --orb-1: rgba(59, 130, 246, 0.12);
+    --orb-2: rgba(16, 185, 129, 0.08);
+    --orb-3: rgba(139, 92, 246, 0.07);
+
+    /* Metric icon backgrounds */
+    --icon-humidity:  rgba(59, 130, 246, 0.15);
+    --icon-wind:      rgba(99, 102, 241, 0.15);
+    --icon-precip:    rgba(14, 165, 233, 0.15);
+    --icon-vis:       rgba(250, 204, 21, 0.12);
+    --icon-uv:        rgba(251, 146, 60, 0.15);
+    --icon-pressure:  rgba(168, 85, 247, 0.15);
+
+    /* Icon accent colors */
+    --c-humidity:     #60a5fa;
+    --c-wind:         #818cf8;
+    --c-precip:       #38bdf8;
+    --c-vis:          #facc15;
+    --c-uv:           #fb923c;
+    --c-pressure:     #c084fc;
+
+    /* Sun bar */
+    --sun-track:      rgba(255,255,255,0.08);
+    --sun-fill:       linear-gradient(90deg, #f59e0b, #fcd34d);
+}
+
+/* ── THEME: LIGHT ───────────────────────────────────────── */
+:root[data-theme="light"] {
+    --bg-base:        #dbeafe;
+    --bg-surface:     #eff6ff;
+    --bg-elevated:    #ffffff;
+
+    --glass-bg:       rgba(255, 255, 255, 0.62);
+    --glass-border:   rgba(59, 130, 246, 0.15);
+    --glass-shadow:   0 8px 40px rgba(30, 64, 175, 0.12);
+
+    --text-primary:   #0f172a;
+    --text-secondary: #334155;
+    --text-muted:     #94a3b8;
+    --text-accent:    #2563eb;
+
+    --accent:         #2563eb;
+    --accent-glow:    rgba(37, 99, 235, 0.2);
+    --accent-hover:   #1d4ed8;
+
+    --orb-1: rgba(59, 130, 246, 0.09);
+    --orb-2: rgba(16, 185, 129, 0.06);
+    --orb-3: rgba(139, 92, 246, 0.05);
+
+    --icon-humidity:  rgba(59, 130, 246, 0.1);
+    --icon-wind:      rgba(99, 102, 241, 0.1);
+    --icon-precip:    rgba(14, 165, 233, 0.1);
+    --icon-vis:       rgba(234, 179, 8, 0.1);
+    --icon-uv:        rgba(249, 115, 22, 0.1);
+    --icon-pressure:  rgba(168, 85, 247, 0.1);
+
+    --sun-track:      rgba(0,0,0,0.07);
+    --sun-fill:       linear-gradient(90deg, #f59e0b, #fcd34d);
+}
+
+/* ── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Space Grotesk', 'Outfit', system-ui, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--accent-hover); }
+
+button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+input, select { font-family: inherit; }
+input:focus { outline: none; }
+select:focus { outline: none; }
+
+/* ── SCROLLBAR STYLING ──────────────────────────────────── */
+::-webkit-scrollbar { height: 4px; width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── UTILITIES ──────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+}
+
+.card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card-title i { color: var(--accent); font-size: 0.85rem; }
+
+.primary-btn {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    white-space: nowrap;
+}
+.primary-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+.primary-btn:active { transform: translateY(0); }

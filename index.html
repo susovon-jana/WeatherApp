@@ -2,171 +2,388 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyCast - Modern Weather</title>
-    
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='65' cy='40' r='22' fill='%23facc15' /%3E%3Ccircle cx='65' cy='40' r='30' fill='%23fef08a' opacity='0.3' /%3E%3Cpath d='M 25 75 A 18 18 0 0 1 25 39 A 24 24 0 0 1 72 39 A 18 18 0 0 1 72 75 Z' fill='%23f8fafc' stroke='%23e2e8f0' stroke-width='2' /%3E%3C/svg%3E">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>SkyCast — Advanced Weather</title>
+
+    <!-- ══════════════════════════════════════════
+         FAVICON
+    ══════════════════════════════════════════ -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='65' cy='38' r='22' fill='%23facc15'/%3E%3Ccircle cx='65' cy='38' r='32' fill='%23fde68a' opacity='0.3'/%3E%3Cpath d='M20 72 A20 20 0 0 1 20 32 A26 26 0 0 1 76 32 A20 20 0 0 1 76 72Z' fill='%23f0f9ff' stroke='%23bae6fd' stroke-width='2'/%3E%3C/svg%3E">
+
+    <!-- ══════════════════════════════════════════
+         FONTS
+    ══════════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@200;300;400;600;700;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- ══════════════════════════════════════════
+         ICONS
+    ══════════════════════════════════════════ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- ══════════════════════════════════════════
+         STYLESHEETS
+    ══════════════════════════════════════════ -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="animations.css">
 </head>
 <body>
-    <div class="app-container">
-        
-        <header class="top-header">
-            
-            <div class="brand-and-controls">
-                <div class="app-branding">
-                    <svg viewBox="0 0 100 100" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="65" cy="40" r="22" fill="#facc15" />
-                        <circle cx="65" cy="40" r="30" fill="#fef08a" opacity="0.3" />
-                        <path d="M 25 75 A 18 18 0 0 1 25 39 A 24 24 0 0 1 72 39 A 18 18 0 0 1 72 75 Z" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" />
+
+    <!-- ══════════════════════════════════════════
+         AMBIENT BACKGROUND LAYERS
+    ══════════════════════════════════════════ -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="noise-overlay"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LOADING SCREEN
+    ══════════════════════════════════════════ -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loader-content">
+            <div class="loader-icon">
+                <i class="fas fa-cloud-sun"></i>
+            </div>
+            <p class="loader-text">Acquiring your location...</p>
+            <div class="loader-bar"><div class="loader-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         MAIN APP WRAPPER
+    ══════════════════════════════════════════ -->
+    <div class="app-wrapper" id="app-wrapper">
+
+        <!-- ────────────────────────────────────
+             STICKY HEADER
+        ──────────────────────────────────────── -->
+        <header class="top-header" id="top-header">
+            <div class="header-left">
+                <!-- Brand -->
+                <div class="brand">
+                    <svg class="brand-logo" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="38" cy="22" r="14" fill="#facc15"/>
+                        <circle cx="38" cy="22" r="20" fill="#fde68a" opacity="0.25"/>
+                        <path d="M10 46 A12 12 0 0 1 10 22 A16 16 0 0 1 46 22 A12 12 0 0 1 46 46Z" fill="currentColor" opacity="0.9"/>
                     </svg>
-                    <h1 class="app-name">SkyCast</h1>
+                    <span class="brand-name">Sky<span class="brand-accent">Cast</span></span>
                 </div>
 
-                <div class="global-controls">
-                    <button id="unit-toggle" class="control-btn" title="Toggle °C / °F">°C</button>
-                    <button id="theme-toggle" class="control-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+                <!-- Date & Greeting -->
+                <div class="header-greeting">
+                    <p id="current-date" class="header-date">Loading date...</p>
+                    <p id="dynamic-greeting" class="header-hello">Hello!</p>
                 </div>
             </div>
 
-            <div class="greeting-container">
-                <p class="date-display" id="current-date"></p>
-                <span id="dynamic-greeting" style="font-weight: 600; color: var(--text-muted);">Hello!</span>
-            </div>
+            <div class="header-right">
+                <!-- Search Bar -->
+                <div class="search-bar" id="search-bar">
+                    <i class="fas fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="city-search" placeholder="Search city, village, area..." autocomplete="off" spellcheck="false">
+                    <button id="gps-btn" class="gps-btn" title="Use GPS Location">
+                        <i class="fas fa-location-crosshairs"></i>
+                    </button>
+                </div>
 
-            <a href="https://dr-susovon.pages.dev" target="_blank" class="profile-widget">
-                <div class="profile-icon">
-                    <i class="fas fa-user-tie"></i>
+                <!-- Controls -->
+                <div class="header-controls">
+                    <button id="unit-toggle" class="ctrl-btn unit-btn" title="Toggle °C / °F">°C</button>
+                    <button id="theme-toggle" class="ctrl-btn" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="https://dr-susovon.pages.dev" target="_blank" class="profile-chip">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Susovon Jana, Ph.D.</span>
+                        <i class="fas fa-arrow-up-right-from-square profile-arrow"></i>
+                    </a>
                 </div>
-                <div class="profile-info">
-                    <span class="profile-name">Susovon Jana, Ph.D.</span>
-                    <span class="profile-link-text">Visit Profile &rarr;</span>
-                </div>
-            </a>
+            </div>
         </header>
 
-        <nav class="locations-nav glass-panel">
-            <div class="search-wrapper">
-                <i class="fas fa-search"></i>
-                <input type="text" id="city-search" placeholder="Search city or area..." autocomplete="off">
-                <button id="gps-btn" title="Use Current Location"><i class="fas fa-location-crosshairs"></i></button>
-            </div>
-            
-            <div class="quick-cities" id="indian-cities-container"></div>
-            
-            <div class="dropdowns-container">
-                <select id="global-capitals" class="custom-select">
-                    <option value="" disabled selected>Global Capitals</option>
+        <!-- ────────────────────────────────────
+             QUICK NAV (City Tabs + Dropdowns)
+        ──────────────────────────────────────── -->
+        <nav class="quick-nav glass-card" id="quick-nav">
+            <div class="city-chips" id="indian-cities-container"></div>
+            <div class="nav-selects">
+                <select id="global-capitals" class="styled-select">
+                    <option value="" disabled selected>🌍 Global Capitals</option>
                 </select>
-                
-                <select id="favorite-locations" class="custom-select">
-                    <option value="" disabled selected>Saved Favorites</option>
+                <select id="favorite-locations" class="styled-select">
+                    <option value="" disabled selected>❤️ Saved Favorites</option>
                 </select>
             </div>
         </nav>
 
-        <main class="dashboard-grid">
-            <section class="current-weather glass-panel hero-panel">
-                <div class="weather-header">
-                    <h2 id="current-location-name" style="font-size: 1.5rem; line-height: 1.3;">Loading Location...</h2>
-                    <button id="save-fav-btn" title="Save to Favorites"><i class="far fa-heart"></i></button>
-                </div>
-                <div class="weather-main-info">
-                    <div class="temp-wrapper">
-                        <span id="current-temp">--</span><span class="unit-symbol">°C</span>
+        <!-- ────────────────────────────────────
+             MAIN DASHBOARD
+        ──────────────────────────────────────── -->
+        <main class="dashboard" id="dashboard">
+
+            <!-- HERO: Current Weather -->
+            <section class="hero-card glass-card" id="hero-card">
+                <div class="hero-top">
+                    <div class="hero-location">
+                        <i class="fas fa-location-dot loc-icon"></i>
+                        <div>
+                            <h2 id="current-location-name" class="location-name">Locating...</h2>
+                            <p id="location-sub" class="location-sub"></p>
+                        </div>
+                        <button id="save-fav-btn" class="fav-btn" title="Save to Favorites">
+                            <i class="far fa-heart"></i>
+                        </button>
                     </div>
-                    <div class="condition-wrapper">
-                        <i id="current-icon" class="fas fa-cloud-sun weather-icon-large"></i>
-                        <p id="current-condition">Loading...</p>
+                    <div class="local-time-badge">
+                        <i class="fas fa-clock"></i>
+                        <span id="local-time">--:--</span>
                     </div>
                 </div>
-                <div class="temp-details">
-                    <p class="feels-like">Feels like: <span id="current-feels-like">--</span>°</p>
-                    <p class="high-low">H: <span id="today-high">--</span>° | L: <span id="today-low">--</span>°</p>
+
+                <div class="hero-main">
+                    <div class="temp-block">
+                        <div class="temp-display">
+                            <span id="current-temp" class="temp-value">--</span>
+                            <span class="unit-symbol">°C</span>
+                        </div>
+                        <p id="current-condition" class="condition-text">Loading...</p>
+                        <div class="temp-range">
+                            <span>Feels <strong id="current-feels-like">--</strong>°</span>
+                            <span class="sep">·</span>
+                            <span>H <strong id="today-high">--</strong>°</span>
+                            <span class="sep">·</span>
+                            <span>L <strong id="today-low">--</strong>°</span>
+                        </div>
+                    </div>
+                    <div class="weather-icon-block">
+                        <i id="current-icon" class="fas fa-cloud-sun hero-icon"></i>
+                        <div id="weather-bg-label" class="weather-bg-label"></div>
+                    </div>
+                </div>
+
+                <!-- Sunrise/Sunset bar -->
+                <div class="sun-bar">
+                    <div class="sun-point sunrise">
+                        <i class="fas fa-sun sun-icon rise"></i>
+                        <div><span class="sun-label">Sunrise</span><span id="sunrise-time" class="sun-time">--:--</span></div>
+                    </div>
+                    <div class="sun-progress-track">
+                        <div class="sun-progress-fill" id="sun-progress"></div>
+                        <div class="sun-dot" id="sun-dot"></div>
+                    </div>
+                    <div class="sun-point sunset">
+                        <div><span class="sun-label">Sunset</span><span id="sunset-time" class="sun-time">--:--</span></div>
+                        <i class="fas fa-moon sun-icon set"></i>
+                    </div>
                 </div>
             </section>
 
-            <section class="metrics-grid">
-                <div class="metric-card glass-panel">
-                    <i class="fas fa-tint metric-icon"></i>
-                    <div class="metric-info">
+            <!-- METRICS PANEL -->
+            <section class="metrics-panel" id="metrics-panel">
+                <div class="metric-card glass-card" id="metric-humidity">
+                    <div class="metric-icon-wrap humidity">
+                        <i class="fas fa-droplet"></i>
+                    </div>
+                    <div class="metric-data">
                         <span class="metric-label">Humidity</span>
-                        <span class="metric-value" id="current-humidity">--%</span>
+                        <span id="current-humidity" class="metric-val">--%</span>
+                    </div>
+                    <div class="metric-bar-wrap">
+                        <div class="metric-bar"><div class="metric-fill humidity-fill" id="humidity-bar"></div></div>
                     </div>
                 </div>
-                <div class="metric-card glass-panel">
-                    <i class="fas fa-wind metric-icon"></i>
-                    <div class="metric-info">
-                        <span class="metric-label">Wind</span>
-                        <span class="metric-value" id="current-wind">-- km/h</span>
+
+                <div class="metric-card glass-card" id="metric-wind">
+                    <div class="metric-icon-wrap wind">
+                        <i class="fas fa-wind"></i>
                     </div>
-                </div>
-                <div class="metric-card glass-panel">
-                    <i class="fas fa-sun metric-icon"></i>
-                    <div class="metric-info">
-                        <span class="metric-label">Sunrise/Sunset</span>
-                        <span class="metric-value" id="sun-times">--:-- / --:--</span>
+                    <div class="metric-data">
+                        <span class="metric-label">Wind Speed</span>
+                        <span id="current-wind" class="metric-val">-- km/h</span>
                     </div>
+                    <div id="wind-direction-text" class="metric-extra">-- direction</div>
                 </div>
-                <div class="metric-card glass-panel">
-                    <i class="fas fa-cloud-rain metric-icon"></i>
-                    <div class="metric-info">
+
+                <div class="metric-card glass-card" id="metric-precip">
+                    <div class="metric-icon-wrap precip">
+                        <i class="fas fa-cloud-rain"></i>
+                    </div>
+                    <div class="metric-data">
                         <span class="metric-label">Precipitation</span>
-                        <span class="metric-value" id="current-precip">-- mm</span>
+                        <span id="current-precip" class="metric-val">-- mm</span>
                     </div>
+                    <div id="rain-prob-text" class="metric-extra">-- chance today</div>
+                </div>
+
+                <div class="metric-card glass-card" id="metric-visibility">
+                    <div class="metric-icon-wrap vis">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="metric-data">
+                        <span class="metric-label">Visibility</span>
+                        <span id="current-visibility" class="metric-val">-- km</span>
+                    </div>
+                    <div id="visibility-label" class="metric-extra">--</div>
+                </div>
+
+                <div class="metric-card glass-card" id="metric-uv">
+                    <div class="metric-icon-wrap uv">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="metric-data">
+                        <span class="metric-label">UV Index</span>
+                        <span id="current-uv" class="metric-val">--</span>
+                    </div>
+                    <div id="uv-label" class="metric-extra">--</div>
+                </div>
+
+                <div class="metric-card glass-card" id="metric-pressure">
+                    <div class="metric-icon-wrap pressure">
+                        <i class="fas fa-gauge-high"></i>
+                    </div>
+                    <div class="metric-data">
+                        <span class="metric-label">Pressure</span>
+                        <span id="current-pressure" class="metric-val">-- hPa</span>
+                    </div>
+                    <div id="pressure-label" class="metric-extra">--</div>
                 </div>
             </section>
 
-            <section class="aqi-panel glass-panel">
-                <h3>Air Quality Index (US AQI)</h3>
-                <div class="aqi-display">
-                    <div class="aqi-main">
-                        <span id="aqi-value" class="aqi-score">--</span>
-                        <span id="aqi-status" class="aqi-text">--</span>
+            <!-- AQI PANEL -->
+            <section class="aqi-card glass-card" id="aqi-card">
+                <div class="aqi-header">
+                    <h3 class="card-title"><i class="fas fa-leaf"></i> Air Quality Index</h3>
+                    <span id="aqi-badge" class="aqi-badge">--</span>
+                </div>
+                <div class="aqi-body">
+                    <div class="aqi-score-wrap">
+                        <div class="aqi-ring" id="aqi-ring">
+                            <svg viewBox="0 0 120 120" class="aqi-svg">
+                                <circle cx="60" cy="60" r="50" class="aqi-track"/>
+                                <circle cx="60" cy="60" r="50" class="aqi-arc" id="aqi-arc"/>
+                            </svg>
+                            <div class="aqi-center">
+                                <span id="aqi-value" class="aqi-num">--</span>
+                                <span class="aqi-unit">AQI</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="aqi-details">
-                        <div class="aqi-item"><span>PM2.5</span><span id="pm25-val">--</span></div>
-                        <div class="aqi-item"><span>PM10</span><span id="pm10-val">--</span></div>
+                    <div class="aqi-pollutants">
+                        <div class="pollutant-row">
+                            <span class="poll-label">PM2.5</span>
+                            <div class="poll-bar"><div class="poll-fill pm25-fill" id="pm25-bar"></div></div>
+                            <span id="pm25-val" class="poll-val">--</span>
+                            <span class="poll-unit">µg/m³</span>
+                        </div>
+                        <div class="pollutant-row">
+                            <span class="poll-label">PM10</span>
+                            <div class="poll-bar"><div class="poll-fill pm10-fill" id="pm10-bar"></div></div>
+                            <span id="pm10-val" class="poll-val">--</span>
+                            <span class="poll-unit">µg/m³</span>
+                        </div>
+                        <div class="pollutant-row">
+                            <span class="poll-label">NO₂</span>
+                            <div class="poll-bar"><div class="poll-fill no2-fill" id="no2-bar"></div></div>
+                            <span id="no2-val" class="poll-val">--</span>
+                            <span class="poll-unit">µg/m³</span>
+                        </div>
+                        <div class="pollutant-row">
+                            <span class="poll-label">O₃</span>
+                            <div class="poll-bar"><div class="poll-fill o3-fill" id="o3-bar"></div></div>
+                            <span id="o3-val" class="poll-val">--</span>
+                            <span class="poll-unit">µg/m³</span>
+                        </div>
                     </div>
                 </div>
+                <p id="aqi-health-advice" class="aqi-advice"></p>
             </section>
 
-            <section class="compare-panel glass-panel">
-                <h3>Compare Cities</h3>
-                <div class="compare-controls">
-                    <input type="text" id="compare-city-1" placeholder="City 1 (e.g., Mumbai)">
-                    <span class="vs">VS</span>
-                    <input type="text" id="compare-city-2" placeholder="City 2 (e.g., London)">
-                    <button id="compare-btn" class="primary-btn">Compare</button>
+            <!-- COMPARE PANEL -->
+            <section class="compare-card glass-card" id="compare-card">
+                <h3 class="card-title"><i class="fas fa-code-compare"></i> Compare Cities</h3>
+                <div class="compare-inputs">
+                    <div class="compare-input-wrap">
+                        <i class="fas fa-city"></i>
+                        <input type="text" id="compare-city-1" placeholder="City 1 (e.g. Mumbai)" autocomplete="off">
+                    </div>
+                    <div class="vs-divider"><span>VS</span></div>
+                    <div class="compare-input-wrap">
+                        <i class="fas fa-city"></i>
+                        <input type="text" id="compare-city-2" placeholder="City 2 (e.g. London)" autocomplete="off">
+                    </div>
+                    <button id="compare-btn" class="primary-btn">
+                        <i class="fas fa-arrow-right-arrow-left"></i> Compare
+                    </button>
                 </div>
                 <div id="compare-results" class="compare-results hidden"></div>
             </section>
-        </main>
 
-        <section class="forecast-section glass-panel">
-            <h3>14-Day Forecast</h3>
+        </main><!-- /dashboard -->
+
+        <!-- ────────────────────────────────────
+             HOURLY FORECAST
+        ──────────────────────────────────────── -->
+        <section class="forecast-section glass-card" id="hourly-section">
+            <div class="section-header">
+                <h3 class="card-title"><i class="fas fa-clock-rotate-left"></i> 24-Hour Forecast</h3>
+            </div>
+            <div class="hourly-scroll" id="hourly-container"></div>
+        </section>
+
+        <!-- ────────────────────────────────────
+             14-DAY FORECAST
+        ──────────────────────────────────────── -->
+        <section class="forecast-section glass-card" id="forecast-section">
+            <div class="section-header">
+                <h3 class="card-title"><i class="fas fa-calendar-days"></i> 14-Day Forecast</h3>
+            </div>
             <div class="forecast-scroll" id="forecast-container"></div>
         </section>
 
-        <footer class="app-footer glass-panel">
-            <div class="footer-content">
-                <p>Designed & Developed by <strong>Susovon Jana, Ph.D.</strong></p>
+        <!-- ────────────────────────────────────
+             FOOTER
+        ──────────────────────────────────────── -->
+        <footer class="app-footer glass-card">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <svg class="footer-logo" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="38" cy="22" r="14" fill="#facc15"/>
+                        <path d="M10 46 A12 12 0 0 1 10 22 A16 16 0 0 1 46 22 A12 12 0 0 1 46 46Z" fill="currentColor" opacity="0.7"/>
+                    </svg>
+                    <div>
+                        <p class="footer-title">SkyCast</p>
+                        <p class="footer-sub">Advanced Weather Intelligence</p>
+                    </div>
+                </div>
+                <div class="footer-info">
+                    <p>Data: <a href="https://open-meteo.com" target="_blank">Open-Meteo</a> · Geocoding: <a href="https://nominatim.openstreetmap.org" target="_blank">Nominatim/OSM</a></p>
+                    <p>Designed &amp; Developed by <a href="https://dr-susovon.pages.dev" target="_blank">Susovon Jana, Ph.D.</a></p>
+                </div>
                 <div class="footer-links">
-                    <a href="https://dr-susovon.pages.dev" target="_blank"><i class="fas fa-book"></i> Documentation</a>
-                    <a href="https://dr-susovon.pages.dev" target="_blank"><i class="fas fa-globe"></i> Visit Profile</a>
+                    <a href="https://dr-susovon.pages.dev" target="_blank"><i class="fas fa-globe"></i> Profile</a>
+                    <a href="https://dr-susovon.pages.dev" target="_blank"><i class="fas fa-book"></i> Docs</a>
                 </div>
             </div>
         </footer>
 
-    </div>
+    </div><!-- /app-wrapper -->
 
-    <script src="script.js"></script>
+    <!-- ══════════════════════════════════════════
+         SCRIPTS (MODULE ORDER MATTERS)
+    ══════════════════════════════════════════ -->
+    <script src="config.js"></script>
+    <script src="utils.js"></script>
+    <script src="api.js"></script>
+    <script src="render.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
