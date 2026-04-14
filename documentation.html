@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast — Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg:        #060c18;
+            --surface:   #0d1526;
+            --elevated:  #141f35;
+            --border:    rgba(255,255,255,0.07);
+            --accent:    #3b82f6;
+            --accent-lo: rgba(59,130,246,0.12);
+            --text:      #e8f0fe;
+            --muted:     #7a92b4;
+            --dim:       #44587a;
+            --good:      #10b981;
+            --warn:      #f59e0b;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Space Grotesk', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* ── AMBIENT ── */
+        .ambient {
+            position: fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+        }
+        .orb {
+            position:absolute; border-radius:50%; filter:blur(100px);
+        }
+        .orb-1 { width:500px;height:500px;background:rgba(59,130,246,0.1);top:-150px;left:-100px; }
+        .orb-2 { width:400px;height:400px;background:rgba(16,185,129,0.07);bottom:0;right:-80px; }
+
+        /* ── SIDEBAR NAV ── */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0;
+            width: 260px;
+            height: 100vh;
+            background: rgba(13,21,38,0.95);
+            border-right: 1px solid var(--border);
+            backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            padding: 28px 20px;
+            gap: 6px;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 24px;
+        }
+        .sidebar-brand svg { width:32px;height:32px; }
+        .sidebar-brand h1 { font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800; }
+        .brand-accent { color: var(--accent); }
+
+        .nav-group-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--dim);
+            font-weight: 600;
+            margin: 14px 0 6px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-link i { width: 16px; text-align: center; font-size: 0.8rem; }
+        .nav-link:hover { background: var(--accent-lo); color: var(--text); }
+        .nav-link.active { background: var(--accent-lo); color: var(--accent); }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            margin-left: 260px;
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            padding: 56px 48px 80px;
+        }
+
+        /* ── HERO BANNER ── */
+        .doc-hero {
+            padding: 48px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(16,185,129,0.08));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+        .doc-hero::after {
+            content:'';
+            position:absolute;
+            right:-40px;bottom:-40px;
+            width:200px;height:200px;
+            background:radial-gradient(circle,rgba(59,130,246,0.2),transparent 70%);
+        }
+        .doc-hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--accent-lo);
+            border: 1px solid rgba(59,130,246,0.3);
+            color: var(--accent);
+            font-size: 0.75rem; font-weight: 700;
+            padding: 4px 12px; border-radius: 20px;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .doc-hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.6rem; font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 14px;
+        }
+        .doc-hero p {
+            font-size: 1.05rem; color: var(--muted);
+            max-width: 560px; line-height: 1.7;
+        }
+        .doc-hero-meta {
+            display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap;
+        }
+        .meta-item {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; color: var(--muted);
+        }
+        .meta-item i { color: var(--accent); }
+        .meta-item strong { color: var(--text); }
+
+        /* ── SECTIONS ── */
+        section { margin-bottom: 56px; }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem; font-weight: 700;
+            margin-bottom: 6px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .section-title i { color: var(--accent); font-size: 1.1rem; }
+        .section-divider {
+            height: 1px; background: var(--border);
+            margin-bottom: 24px;
+        }
+
+        p { color: var(--muted); margin-bottom: 14px; }
+        p strong { color: var(--text); }
+        p a { color: var(--accent); text-decoration: none; }
+        p a:hover { text-decoration: underline; }
+
+        /* ── CARD ── */
+        .card {
+            background: rgba(14,22,45,0.65);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px 26px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem; font-weight: 700;
+            margin-bottom: 8px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .card h3 i { color: var(--accent); }
+        .card p { margin-bottom: 0; font-size: 0.9rem; }
+
+        /* ── GRID ── */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        /* ── CODE BLOCK ── */
+        .code-block {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: #93c5fd;
+            white-space: pre;
+        }
+        .code-block .comment { color: var(--dim); }
+        .code-block .string  { color: #86efac; }
+        .code-block .keyword { color: #f0abfc; }
+
+        /* ── TABLE ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.88rem;
+        }
+        th {
+            text-align: left;
+            padding: 10px 14px;
+            background: rgba(59,130,246,0.1);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            color: var(--muted);
+            vertical-align: top;
+        }
+        td:first-child { color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+        tr:last-child td { border-bottom: none; }
+
+        /* ── BADGES ── */
+        .badge {
+            display: inline-block;
+            padding: 2px 10px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .badge-blue   { background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.25); }
+        .badge-green  { background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.25); }
+        .badge-yellow { background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.25); }
+
+        /* ── FLOW DIAGRAM ── */
+        .flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 20px 0;
+        }
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            position: relative;
+        }
+        .flow-step:not(:last-child)::after {
+            content:'';
+            position:absolute;
+            left:19px; top:46px;
+            width:2px; bottom:-4px;
+            background: var(--border);
+        }
+        .flow-num {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--accent-lo);
+            border: 1px solid rgba(59,130,246,0.3);
+            color: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .flow-body h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem; font-weight: 700;
+            margin-bottom: 4px; color: var(--text);
+        }
+        .flow-body p { margin: 0; font-size: 0.85rem; }
+
+        /* ── AUTHOR CARD ── */
+        .author-card {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(16,185,129,0.06));
+            border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 18px;
+            padding: 24px 28px;
+        }
+        .author-avatar {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: var(--accent-lo);
+            border: 2px solid rgba(59,130,246,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: var(--accent);
+            flex-shrink: 0;
+        }
+        .author-info h3 { font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:4px; }
+        .author-info p  { font-size:0.85rem;margin-bottom:0; }
+        .author-links { display:flex;gap:10px;margin-top:10px; }
+        .author-link {
+            display:flex;align-items:center;gap:6px;
+            padding:5px 12px;
+            background:rgba(59,130,246,0.15);
+            border:1px solid rgba(59,130,246,0.3);
+            border-radius:8px;
+            color:var(--accent);font-size:0.8rem;font-weight:600;
+            text-decoration:none;transition:background 0.2s;
+        }
+        .author-link:hover { background:rgba(59,130,246,0.28); }
+
+        /* ── HIGHLIGHT ── */
+        .highlight-box {
+            background: rgba(245,158,11,0.08);
+            border: 1px solid rgba(245,158,11,0.2);
+            border-left: 3px solid var(--warn);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 16px 0;
+        }
+        .highlight-box p { margin:0; font-size:0.88rem; color:var(--muted); }
+        .highlight-box strong { color: var(--warn); }
+
+        /* ── FILE TREE ── */
+        .file-tree {
+            background: rgba(0,0,0,0.35);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 2;
+        }
+        .file-tree .dir   { color: var(--accent); }
+        .file-tree .file  { color: var(--text); }
+        .file-tree .note  { color: var(--dim); font-style:italic; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-260px); }
+            .main { margin-left: 0; padding: 32px 20px 60px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .doc-hero { padding: 28px; }
+            .doc-hero h1 { font-size: 1.8rem; }
+            .author-card { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ambient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+</div>
+
+<!-- ══════════ SIDEBAR NAV ══════════ -->
+<nav class="sidebar">
+    <div class="sidebar-brand">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="38" cy="22" r="14" fill="#facc15"/>
+            <circle cx="38" cy="22" r="20" fill="#fde68a" opacity="0.2"/>
+            <path d="M10 46 A12 12 0 0 1 10 22 A16 16 0 0 1 46 22 A12 12 0 0 1 46 46Z" fill="#e8f0fe" opacity="0.85"/>
+        </svg>
+        <h1>Sky<span class="brand-accent">Cast</span> <span style="font-size:0.75rem;color:var(--dim);font-weight:400;">Docs</span></h1>
+    </div>
+
+    <span class="nav-group-label">Overview</span>
+    <a href="#overview"   class="nav-link active"><i class="fas fa-house"></i> Introduction</a>
+    <a href="#developer"  class="nav-link"><i class="fas fa-user"></i> Developer</a>
+    <a href="#features"   class="nav-link"><i class="fas fa-star"></i> Features</a>
+
+    <span class="nav-group-label">Architecture</span>
+    <a href="#structure"  class="nav-link"><i class="fas fa-folder-tree"></i> File Structure</a>
+    <a href="#data-flow"  class="nav-link"><i class="fas fa-diagram-project"></i> Data Flow</a>
+    <a href="#apis"       class="nav-link"><i class="fas fa-plug"></i> APIs Used</a>
+
+    <span class="nav-group-label">Running It</span>
+    <a href="#setup"      class="nav-link"><i class="fas fa-play"></i> Local Setup</a>
+    <a href="#deployment" class="nav-link"><i class="fas fa-cloud-upload-alt"></i> Deployment</a>
+
+    <span class="nav-group-label">Reference</span>
+    <a href="#modules"    class="nav-link"><i class="fas fa-cube"></i> JS Modules</a>
+    <a href="#css"        class="nav-link"><i class="fas fa-palette"></i> CSS Architecture</a>
+    <a href="#config"     class="nav-link"><i class="fas fa-sliders"></i> Configuration</a>
+</nav>
+
+<!-- ══════════ MAIN CONTENT ══════════ -->
+<main class="main">
+
+    <!-- Hero -->
+    <div class="doc-hero" id="overview">
+        <div class="doc-hero-badge"><i class="fas fa-cloud-sun"></i> Documentation v1.0</div>
+        <h1>SkyCast — Advanced Weather Intelligence</h1>
+        <p>A full-featured, real-time weather progressive web application built with vanilla HTML, CSS, and JavaScript. No frameworks. No build tools. Just clean, well-structured code.</p>
+        <div class="doc-hero-meta">
+            <div class="meta-item"><i class="fas fa-calendar"></i> <strong>Year:</strong> 2025–2026</div>
+            <div class="meta-item"><i class="fas fa-code-branch"></i> <strong>Version:</strong> 1.0</div>
+            <div class="meta-item"><i class="fas fa-weight-scale"></i> <strong>Size:</strong> ~3 files (merged)</div>
+            <div class="meta-item"><i class="fas fa-bolt"></i> <strong>Stack:</strong> Vanilla JS + CSS</div>
+        </div>
+    </div>
+
+    <!-- Developer -->
+    <section id="developer">
+        <h2 class="section-title"><i class="fas fa-user-tie"></i> Developer</h2>
+        <div class="section-divider"></div>
+        <div class="author-card">
+            <div class="author-avatar"><i class="fas fa-user-tie"></i></div>
+            <div class="author-info">
+                <h3>Susovon Jana, Ph.D.</h3>
+                <p>Researcher, developer, and designer of SkyCast. Passionate about combining scientific rigour with intuitive, beautiful interface design. The project was created as a demonstration of what is possible with pure browser technologies — no React, no Vue, no bundlers.</p>
+                <div class="author-links">
+                    <a href="https://dr-susovon.pages.dev" target="_blank" class="author-link">
+                        <i class="fas fa-globe"></i> Portfolio
+                    </a>
+                    <a href="https://github.com/susovon-jana/WeatherApp" target="_blank" class="author-link">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <h2 class="section-title"><i class="fas fa-star"></i> Features</h2>
+        <div class="section-divider"></div>
+        <div class="grid-2">
+            <div class="card">
+                <h3><i class="fas fa-location-crosshairs"></i> GPS Location</h3>
+                <p>Automatically detects the user's precise location using the browser Geolocation API, with graceful fallback to city search.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-temperature-half"></i> Live Weather</h3>
+                <p>Fetches real-time temperature, feels-like, humidity, wind, pressure, UV index, and visibility from Open-Meteo.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-clock-rotate-left"></i> 24-Hour Forecast</h3>
+                <p>Hourly breakdown for the next 24 hours including rain probability and weather icon per hour.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-calendar-days"></i> 14-Day Forecast</h3>
+                <p>Extended 14-day daily forecast with high/low temperatures, rain probability, and average humidity.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-leaf"></i> Air Quality Index</h3>
+                <p>US AQI with animated ring gauge, PM2.5, PM10, NO₂ and O₃ pollutant bars, and health advice text.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-code-compare"></i> City Compare</h3>
+                <p>Side-by-side weather comparison of any two cities worldwide with instant API look-up.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-heart"></i> Saved Favorites</h3>
+                <p>Up to 8 locations can be saved to browser localStorage for quick one-tap access.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-sun"></i> Sun Progress Bar</h3>
+                <p>Animated sunrise-to-sunset arc showing real-time sun position based on local timezone data.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- File Structure -->
+    <section id="structure">
+        <h2 class="section-title"><i class="fas fa-folder-tree"></i> File Structure</h2>
+        <div class="section-divider"></div>
+        <p>The original project was split into <strong>14 files</strong> for development. The production version merges these into <strong>3 files</strong> for simplicity and portability.</p>
+
+        <div class="file-tree">
+            <span class="dir">skycast/</span><br>
+            &nbsp;&nbsp;<span class="file">├── index.html</span>         <span class="note">← full HTML structure</span><br>
+            &nbsp;&nbsp;<span class="file">├── styles.css</span>         <span class="note">← ALL styles merged</span><br>
+            &nbsp;&nbsp;<span class="file">├── app.js</span>             <span class="note">← ALL JavaScript merged</span><br>
+            &nbsp;&nbsp;<span class="file">└── documentation.html</span> <span class="note">← this file</span>
+        </div>
+
+        <p style="margin-top:16px;">The 3-file merged version is equivalent to the original 14-file structure:</p>
+
+        <table>
+            <thead>
+                <tr><th>Original File</th><th>Merged Into</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>index.html</td><td>index.html</td><td>Full HTML markup and DOM structure</td></tr>
+                <tr><td>base.css</td><td>styles.css §1–2</td><td>CSS variables (dark/light themes), reset, typography</td></tr>
+                <tr><td>layout.css</td><td>styles.css §3–9</td><td>Ambient orbs, loading screen, header, nav, grid, footer</td></tr>
+                <tr><td>components.css</td><td>styles.css §10–14</td><td>Hero card, metrics, AQI, compare, forecast cards</td></tr>
+                <tr><td>animations.css</td><td>styles.css §15</td><td>Keyframes, stagger effects, reduced-motion support</td></tr>
+                <tr><td>responsive.css</td><td>styles.css §16</td><td>Breakpoints: 1200px, 1024px, 768px, 480px, landscape</td></tr>
+                <tr><td>config.js</td><td>app.js §1</td><td>App state, city lists, weather/AQI/UV lookup tables</td></tr>
+                <tr><td>utils.js</td><td>app.js §2</td><td>Conversion functions, toast, debounce, favorites helpers</td></tr>
+                <tr><td>api.js</td><td>app.js §3</td><td>All fetch logic: geocoding, weather, AQI, GPS, compare</td></tr>
+                <tr><td>render.js</td><td>app.js §4</td><td>All DOM rendering: hero, metrics, AQI, hourly, forecast</td></tr>
+                <tr><td>app.js</td><td>app.js §5</td><td>Init, event listeners, theme/unit toggle, compare handler</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Data Flow -->
+    <section id="data-flow">
+        <h2 class="section-title"><i class="fas fa-diagram-project"></i> Data Flow</h2>
+        <div class="section-divider"></div>
+        <p>SkyCast follows a simple, linear data pipeline from user action to rendered UI.</p>
+
+        <div class="flow">
+            <div class="flow-step">
+                <div class="flow-num">1</div>
+                <div class="flow-body">
+                    <h4>User Action</h4>
+                    <p>User opens the app, clicks a city chip, types a search, or presses the GPS button.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num">2</div>
+                <div class="flow-body">
+                    <h4>Geocoding</h4>
+                    <p><strong>Open-Meteo Geocoding API</strong> converts a city name to latitude/longitude coordinates. For GPS, <strong>Nominatim (OSM)</strong> does the reverse — coords → human-readable location name.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num">3</div>
+                <div class="flow-body">
+                    <h4>Parallel API Fetch</h4>
+                    <p>Two API calls fire simultaneously via <code>Promise.all()</code>: the <strong>Open-Meteo weather API</strong> (current + hourly + daily) and the <strong>Open-Meteo Air Quality API</strong> (AQI + pollutants).</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num">4</div>
+                <div class="flow-body">
+                    <h4>Data Normalisation</h4>
+                    <p>Raw API responses are transformed into a single <code>currentWeatherData</code> object. Hourly data is sliced to the next 24 hours; daily data is iterated into 14 day objects with computed average humidity.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num">5</div>
+                <div class="flow-body">
+                    <h4>Render</h4>
+                    <p><code>renderDashboard()</code> calls each sub-renderer in order: hero → metrics → AQI → hourly → 14-day forecast. All DOM writes use <code>setEl()</code> to safely update elements by ID.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APIs -->
+    <section id="apis">
+        <h2 class="section-title"><i class="fas fa-plug"></i> APIs Used</h2>
+        <div class="section-divider"></div>
+
+        <div class="card">
+            <h3><i class="fas fa-cloud"></i> Open-Meteo Weather API <span class="badge badge-green">Free · No Key</span></h3>
+            <p>Provides current conditions (temperature, humidity, wind, pressure, UV, cloud cover, visibility, precipitation), plus hourly and 14-day daily forecasts. <a href="https://open-meteo.com" target="_blank">open-meteo.com</a></p>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-leaf"></i> Open-Meteo Air Quality API <span class="badge badge-green">Free · No Key</span></h3>
+            <p>Returns US AQI, PM2.5, PM10, nitrogen dioxide (NO₂) and ozone (O₃) for any coordinates. <a href="https://air-quality-api.open-meteo.com" target="_blank">air-quality-api.open-meteo.com</a></p>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-magnifying-glass"></i> Open-Meteo Geocoding API <span class="badge badge-green">Free · No Key</span></h3>
+            <p>Converts city names to latitude/longitude. Used for city search and the global capitals dropdown. <a href="https://geocoding-api.open-meteo.com" target="_blank">geocoding-api.open-meteo.com</a></p>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-map-pin"></i> Nominatim / OpenStreetMap <span class="badge badge-green">Free · No Key</span></h3>
+            <p>Reverse geocoding — converts GPS coordinates to a human-readable location name (village, district, state, country). <a href="https://nominatim.openstreetmap.org" target="_blank">nominatim.openstreetmap.org</a></p>
+        </div>
+
+        <div class="highlight-box">
+            <p><strong>Zero API keys required.</strong> SkyCast intentionally uses only free, open APIs with no authentication requirement. This means it can be deployed and run by anyone without signing up for any service.</p>
+        </div>
+    </section>
+
+    <!-- Setup -->
+    <section id="setup">
+        <h2 class="section-title"><i class="fas fa-play"></i> Local Setup</h2>
+        <div class="section-divider"></div>
+        <p>SkyCast requires <strong>no build tools, no npm, no Node.js</strong>. All you need is a browser and a local static file server (to satisfy browser CORS restrictions on the Geolocation API).</p>
+
+        <h3 style="font-family:'Outfit',sans-serif;margin:20px 0 10px;font-size:1rem;">Option A — VS Code Live Server (Recommended)</h3>
+        <p>Install the <strong>Live Server</strong> extension in VS Code, right-click <code>index.html</code> and choose <em>Open with Live Server</em>.</p>
+
+        <h3 style="font-family:'Outfit',sans-serif;margin:20px 0 10px;font-size:1rem;">Option B — Python HTTP Server</h3>
+        <div class="code-block">
+<pre><span class="comment"># Navigate to the project folder</span>
+cd skycast/
+
+<span class="comment"># Python 3</span>
+python -m http.server 8080
+
+<span class="comment"># Then open http://localhost:8080 in your browser</span></pre>
+        </div>
+
+        <h3 style="font-family:'Outfit',sans-serif;margin:20px 0 10px;font-size:1rem;">Option C — Node.js serve</h3>
+        <div class="code-block">
+<pre>npx serve .
+<span class="comment"># Then open the URL shown in terminal</span></pre>
+        </div>
+
+        <div class="highlight-box">
+            <p><strong>Note:</strong> GPS will not work if you open <code>index.html</code> directly as a <code>file://</code> URL. A local server is required for the Geolocation API to function correctly.</p>
+        </div>
+    </section>
+
+    <!-- Deployment -->
+    <section id="deployment">
+        <h2 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Deployment</h2>
+        <div class="section-divider"></div>
+        <p>SkyCast is a fully static application — deploy it anywhere that serves static files. The live version runs on <strong>Cloudflare Pages</strong> at <a href="https://sky-cast.pages.dev" target="_blank">sky-cast.pages.dev</a>.</p>
+
+        <h3 style="font-family:'Outfit',sans-serif;margin:20px 0 10px;font-size:1rem;">Git Workflow</h3>
+        <div class="code-block">
+<pre><span class="comment"># First-time setup</span>
+git init
+git remote add origin https://github.com/susovon-jana/WeatherApp.git
+git add .
+git commit -m <span class="string">"First commit"</span>
+git branch -M main
+git push -u origin main
+
+<span class="comment"># Subsequent pushes</span>
+git add .
+git commit -m <span class="string">"update"</span>
+git push</pre>
+        </div>
+
+        <div class="grid-2" style="margin-top:16px;">
+            <div class="card">
+                <h3><i class="fas fa-bolt"></i> Cloudflare Pages</h3>
+                <p>Connect your GitHub repo to Cloudflare Pages. Set build command to <em>none</em> and output directory to <code>/</code>. Every push auto-deploys.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fab fa-github"></i> GitHub Pages</h3>
+                <p>Enable GitHub Pages on the <code>main</code> branch in repository settings. The site will be live at <code>username.github.io/WeatherApp</code>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- JS Modules -->
+    <section id="modules">
+        <h2 class="section-title"><i class="fas fa-cube"></i> JS Module Reference</h2>
+        <div class="section-divider"></div>
+
+        <table>
+            <thead>
+                <tr><th>Function</th><th>Module (§)</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>CONFIG</td><td>§1 Config</td><td>Global app state: unit preference, favorites array, last location</td></tr>
+                <tr><td>WEATHER_CODES</td><td>§1 Config</td><td>Map of WMO weather codes to icon, color, and text description</td></tr>
+                <tr><td>AQI_LEVELS</td><td>§1 Config</td><td>Array of AQI thresholds with color and health advice</td></tr>
+                <tr><td>convertTemp()</td><td>§2 Utils</td><td>Converts Celsius to °C or °F based on CONFIG.isMetric</td></tr>
+                <tr><td>showToast()</td><td>§2 Utils</td><td>Displays a transient notification message at screen bottom</td></tr>
+                <tr><td>getSunProgress()</td><td>§2 Utils</td><td>Returns 0–1 fraction of daylight elapsed for sun progress bar</td></tr>
+                <tr><td>handleGPS()</td><td>§3 API</td><td>Triggers browser geolocation and calls reverseGeocode + weather</td></tr>
+                <tr><td>fetchCoordinates()</td><td>§3 API</td><td>Geocodes a city name and loads weather for that location</td></tr>
+                <tr><td>getLiveWeatherData()</td><td>§3 API</td><td>Main data-fetch: calls weather + AQI APIs in parallel</td></tr>
+                <tr><td>compareCities()</td><td>§3 API</td><td>Geocodes two cities and fetches weather for both simultaneously</td></tr>
+                <tr><td>renderDashboard()</td><td>§4 Render</td><td>Master render that calls all sub-renderers in sequence</td></tr>
+                <tr><td>renderHero()</td><td>§4 Render</td><td>Updates location name, temperature, condition, sun bar</td></tr>
+                <tr><td>renderAQI()</td><td>§4 Render</td><td>Animates AQI ring, sets badge color, updates pollutant bars</td></tr>
+                <tr><td>startLocalClock()</td><td>§4 Render</td><td>Starts a 1-second interval showing the location's local time</td></tr>
+                <tr><td>init()</td><td>§5 App</td><td>Entry point: populates UI lists, binds events, fires GPS</td></tr>
+                <tr><td>setTheme()</td><td>§5 App</td><td>Toggles dark/light theme on <code>&lt;html&gt;</code> data-theme attribute</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- CSS Architecture -->
+    <section id="css">
+        <h2 class="section-title"><i class="fas fa-palette"></i> CSS Architecture</h2>
+        <div class="section-divider"></div>
+        <p>All styles are written in pure CSS3 using <strong>custom properties (variables)</strong> for theming and a <strong>CSS Grid</strong> layout system. There is no preprocessor (Sass/Less) and no utility framework (Tailwind).</p>
+
+        <table>
+            <thead><tr><th>Section</th><th>Lines (approx.)</th><th>Contents</th></tr></thead>
+            <tbody>
+                <tr><td>§1 Variables</td><td>~80</td><td>Dark and light theme tokens: colors, glass, shadows, icons</td></tr>
+                <tr><td>§2 Reset</td><td>~40</td><td>Box-model reset, base typography, scrollbar styling, utilities</td></tr>
+                <tr><td>§3–4 Background/Loader</td><td>~50</td><td>Ambient orbs, loading screen with progress bar</td></tr>
+                <tr><td>§5–9 Layout</td><td>~180</td><td>App wrapper, sticky header, search bar, quick-nav, grid, footer</td></tr>
+                <tr><td>§10 Hero</td><td>~110</td><td>Temperature display, weather icon, sunrise/sunset bar</td></tr>
+                <tr><td>§11 Metrics</td><td>~55</td><td>6-card metrics grid with icon wraps and bar charts</td></tr>
+                <tr><td>§12 AQI</td><td>~70</td><td>SVG ring gauge, pollutant bars, badge coloring</td></tr>
+                <tr><td>§13 Compare</td><td>~55</td><td>Input wraps, VS divider, compare results grid</td></tr>
+                <tr><td>§14 Forecast</td><td>~80</td><td>Hourly scroll and 14-day card scroll containers</td></tr>
+                <tr><td>§15 Animations</td><td>~90</td><td>All @keyframes, stagger delays, reduced-motion support</td></tr>
+                <tr><td>§16 Responsive</td><td>~150</td><td>6 breakpoints: 1200, 1024, 768, 480px + landscape + safe areas</td></tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top:16px;">The dark theme is the default (<code>:root</code>) and the light theme is applied via <code>[data-theme="light"]</code> on the <code>&lt;html&gt;</code> element, toggled by JavaScript and persisted to <code>localStorage</code>.</p>
+    </section>
+
+    <!-- Configuration -->
+    <section id="config">
+        <h2 class="section-title"><i class="fas fa-sliders"></i> Configuration</h2>
+        <div class="section-divider"></div>
+        <p>All user-facing configuration is centralised in the <code>CONFIG</code> object and the static arrays at the top of <code>app.js</code>.</p>
+
+        <table>
+            <thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>CONFIG.isMetric</td><td>boolean</td><td>true</td><td>Temperature unit: true = °C, false = °F</td></tr>
+                <tr><td>CONFIG.favorites</td><td>string[]</td><td>[]</td><td>Saved location strings from localStorage</td></tr>
+                <tr><td>CONFIG.lastLocation</td><td>object</td><td>null</td><td>Most recently loaded location (lat, lon, name)</td></tr>
+                <tr><td>INDIAN_CITIES</td><td>string[]</td><td>15 cities</td><td>Quick-access city chips in the nav bar</td></tr>
+                <tr><td>GLOBAL_CAPITALS</td><td>string[]</td><td>30 capitals</td><td>Dropdown list of world capital cities</td></tr>
+            </tbody>
+        </table>
+
+        <p>To add more Indian cities or global capitals, simply append to the <code>INDIAN_CITIES</code> or <code>GLOBAL_CAPITALS</code> arrays at the top of <code>app.js</code>.</p>
+
+        <div class="code-block">
+<pre><span class="comment">// Example: add Siliguri to city chips</span>
+<span class="keyword">const</span> INDIAN_CITIES = [
+    <span class="string">"Kolkata"</span>, <span class="string">"Mumbai"</span>, ..., <span class="string">"Siliguri"</span>
+];</pre>
+        </div>
+
+        <p style="margin-top: 20px; text-align:center; color: var(--dim); font-size:0.82rem;">
+            SkyCast Documentation — Built by <a href="https://dr-susovon.pages.dev" target="_blank" style="color:var(--accent)">Susovon Jana, Ph.D.</a> · 
+            Source: <a href="https://github.com/susovon-jana/WeatherApp" target="_blank" style="color:var(--accent)">GitHub</a> ·
+            Live: <a href="https://sky-cast.pages.dev" target="_blank" style="color:var(--accent)">sky-cast.pages.dev</a>
+        </p>
+    </section>
+
+</main>
+
+<script>
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+
+    sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

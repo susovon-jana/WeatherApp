@@ -25,13 +25,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- ══════════════════════════════════════════
-         STYLESHEETS
+         STYLESHEET (merged: base + layout + components + responsive + animations)
     ══════════════════════════════════════════ -->
-    <link rel="stylesheet" href="base.css">
-    <link rel="stylesheet" href="layout.css">
-    <link rel="stylesheet" href="components.css">
-    <link rel="stylesheet" href="responsive.css">
-    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -78,7 +74,7 @@
                     <span class="brand-name">Sky<span class="brand-accent">Cast</span></span>
                 </div>
 
-                <!-- Date & Greeting -->
+                <!-- Date & Greeting (hidden on small mobile, shown on tablet+) -->
                 <div class="header-greeting">
                     <p id="current-date" class="header-date">Loading date...</p>
                     <p id="dynamic-greeting" class="header-hello">Hello!</p>
@@ -89,7 +85,7 @@
                 <!-- Search Bar -->
                 <div class="search-bar" id="search-bar">
                     <i class="fas fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="city-search" placeholder="Search city, village, area..." autocomplete="off" spellcheck="false">
+                    <input type="text" id="city-search" placeholder="Search city..." autocomplete="off" spellcheck="false">
                     <button id="gps-btn" class="gps-btn" title="Use GPS Location">
                         <i class="fas fa-location-crosshairs"></i>
                     </button>
@@ -103,7 +99,7 @@
                     </button>
                     <a href="https://dr-susovon.pages.dev" target="_blank" class="profile-chip">
                         <i class="fas fa-user-tie"></i>
-                        <span>Susovon Jana, Ph.D.</span>
+                        <span class="profile-chip-text">Susovon Jana, Ph.D.</span>
                         <i class="fas fa-arrow-up-right-from-square profile-arrow"></i>
                     </a>
                 </div>
@@ -159,36 +155,41 @@
                         <div class="temp-range">
                             <span>Feels <strong id="current-feels-like">--</strong>°</span>
                             <span class="sep">·</span>
-                            <span>H <strong id="today-high">--</strong>°</span>
-                            <span class="sep">·</span>
-                            <span>L <strong id="today-low">--</strong>°</span>
+                            <span>H:<strong id="today-high">--</strong>° L:<strong id="today-low">--</strong>°</span>
                         </div>
                     </div>
                     <div class="weather-icon-block">
-                        <i id="current-icon" class="fas fa-cloud-sun hero-icon"></i>
-                        <div id="weather-bg-label" class="weather-bg-label"></div>
+                        <i id="current-icon" class="fas fa-cloud hero-icon"></i>
+                        <span id="weather-bg-label" class="weather-bg-label">--</span>
                     </div>
                 </div>
 
-                <!-- Sunrise/Sunset bar -->
+                <!-- Sun Progress Bar -->
                 <div class="sun-bar">
-                    <div class="sun-point sunrise">
-                        <i class="fas fa-sun sun-icon rise"></i>
-                        <div><span class="sun-label">Sunrise</span><span id="sunrise-time" class="sun-time">--:--</span></div>
+                    <div class="sun-point">
+                        <i class="sun-icon rise fas fa-arrow-up"></i>
+                        <div>
+                            <span class="sun-label">Sunrise</span>
+                            <span id="sunrise-time" class="sun-time">--:--</span>
+                        </div>
                     </div>
                     <div class="sun-progress-track">
                         <div class="sun-progress-fill" id="sun-progress"></div>
                         <div class="sun-dot" id="sun-dot"></div>
                     </div>
-                    <div class="sun-point sunset">
-                        <div><span class="sun-label">Sunset</span><span id="sunset-time" class="sun-time">--:--</span></div>
-                        <i class="fas fa-moon sun-icon set"></i>
+                    <div class="sun-point">
+                        <i class="sun-icon set fas fa-arrow-down"></i>
+                        <div>
+                            <span class="sun-label">Sunset</span>
+                            <span id="sunset-time" class="sun-time">--:--</span>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- METRICS PANEL -->
             <section class="metrics-panel" id="metrics-panel">
+
                 <div class="metric-card glass-card" id="metric-humidity">
                     <div class="metric-icon-wrap humidity">
                         <i class="fas fa-droplet"></i>
@@ -198,7 +199,7 @@
                         <span id="current-humidity" class="metric-val">--%</span>
                     </div>
                     <div class="metric-bar-wrap">
-                        <div class="metric-bar"><div class="metric-fill humidity-fill" id="humidity-bar"></div></div>
+                        <div class="metric-bar"><div class="metric-fill humidity-fill" id="humidity-bar" style="width:0%"></div></div>
                     </div>
                 </div>
 
@@ -210,7 +211,7 @@
                         <span class="metric-label">Wind Speed</span>
                         <span id="current-wind" class="metric-val">-- km/h</span>
                     </div>
-                    <div id="wind-direction-text" class="metric-extra">-- direction</div>
+                    <div id="wind-direction-text" class="metric-extra">--</div>
                 </div>
 
                 <div class="metric-card glass-card" id="metric-precip">
@@ -221,7 +222,7 @@
                         <span class="metric-label">Precipitation</span>
                         <span id="current-precip" class="metric-val">-- mm</span>
                     </div>
-                    <div id="rain-prob-text" class="metric-extra">-- chance today</div>
+                    <div id="rain-prob-text" class="metric-extra">--</div>
                 </div>
 
                 <div class="metric-card glass-card" id="metric-visibility">
@@ -256,6 +257,7 @@
                     </div>
                     <div id="pressure-label" class="metric-extra">--</div>
                 </div>
+
             </section>
 
             <!-- AQI PANEL -->
@@ -370,7 +372,7 @@
                 </div>
                 <div class="footer-links">
                     <a href="https://dr-susovon.pages.dev" target="_blank"><i class="fas fa-globe"></i> Profile</a>
-                    <a href="https://dr-susovon.pages.dev" target="_blank"><i class="fas fa-book"></i> Docs</a>
+                    <a href="documentation.html" target="_blank"><i class="fas fa-book"></i> Docs</a>
                 </div>
             </div>
         </footer>
@@ -378,12 +380,8 @@
     </div><!-- /app-wrapper -->
 
     <!-- ══════════════════════════════════════════
-         SCRIPTS (MODULE ORDER MATTERS)
+         SCRIPTS (merged: config + utils + api + render + app)
     ══════════════════════════════════════════ -->
-    <script src="config.js"></script>
-    <script src="utils.js"></script>
-    <script src="api.js"></script>
-    <script src="render.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
