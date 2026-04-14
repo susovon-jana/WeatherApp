@@ -848,6 +848,21 @@ function populateCapitalsSelect() {
 
 // ── EVENT LISTENERS ───────────────────────────────────────
 function setupEventListeners() {
+    // ── ANTI-COPY & DEV TOOLS DETERRENTS ADDED HERE ──
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    
+    document.addEventListener('copy', (e) => {
+        e.preventDefault();
+        showToast('Copying is disabled.', 'error');
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'F12') e.preventDefault();
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) e.preventDefault();
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u')) e.preventDefault();
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'S' || e.key === 's')) e.preventDefault();
+    });
+    // ─────────────────────────────────────────────────
 
     DOM.themeToggle()?.addEventListener('click', () => {
         const current = document.documentElement.getAttribute('data-theme');
