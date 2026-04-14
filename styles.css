@@ -66,7 +66,7 @@ body {
 /* --- Sticky Header Layout --- */
 .top-header {
     position: sticky;
-    top: -20px; /* Aligns smoothly with app-container padding */
+    top: 0; /* Fixed to exactly the top edge */
     z-index: 1000;
     background-color: var(--bg-color);
     display: flex;
@@ -74,7 +74,7 @@ body {
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    padding: 20px 0 15px 0;
+    padding: 15px 0;
     border-bottom: 1px solid var(--glass-border);
     transition: background-color 0.4s ease;
 }
@@ -208,7 +208,7 @@ body {
 /* Hero Panel */
 .hero-panel { grid-column: 1 / 2; grid-row: 1 / 3; display: flex; flex-direction: column; justify-content: center; }
 .weather-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-.weather-header h2 { font-size: 2rem; }
+.weather-header h2 { font-size: 2rem; line-height: 1.3; }
 #save-fav-btn { background: transparent; border: none; color: #ef4444; font-size: 1.5rem; cursor: pointer; }
 
 .weather-main-info { display: flex; align-items: center; gap: 30px; }
@@ -297,12 +297,21 @@ body {
     .hero-panel { grid-column: 1 / 2; grid-row: 1 / 3; }
     .metrics-grid { grid-column: 2 / 3; }
     .aqi-panel { grid-column: 2 / 3; }
-    .top-header { top: 0; }
 }
 
-/* Updated Mobile View for Header */
+/* Updated Mobile View for Header & Footer */
 @media (max-width: 768px) {
-    .top-header { flex-direction: column; align-items: stretch; position: relative; top: 0; padding: 0 0 15px 0;}
+    /* Keeps header fixed at top and ensures background is solid */
+    .top-header { 
+        position: sticky; 
+        top: 0; 
+        padding: 15px 0; 
+        flex-direction: column; 
+        align-items: stretch;
+        background-color: var(--bg-color);
+        z-index: 1000;
+    }
+    
     .brand-and-controls { justify-content: space-between; width: 100%; }
     .greeting-container { text-align: left; order: 3; margin-top: 10px; }
     .profile-widget { order: 4; width: 100%; justify-content: center; margin-top: 10px; }
@@ -312,4 +321,13 @@ body {
     .compare-controls input, .primary-btn { width: 100%; }
     .dropdowns-container { width: 100%; display: flex; justify-content: space-between;}
     .custom-select { margin-left: 0; width: 48%; }
+
+    /* Fixes footer spacing on small screens */
+    .app-footer {
+        padding: 20px 15px;
+    }
+    .footer-links {
+        flex-direction: column;
+        gap: 12px;
+    }
 }
