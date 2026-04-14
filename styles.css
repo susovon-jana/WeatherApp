@@ -63,15 +63,20 @@ body {
 
 .hidden { display: none !important; }
 
-/* --- Header Layout (Updated for Branding & Controls) --- */
+/* --- Sticky Header Layout --- */
 .top-header {
+    position: sticky;
+    top: -20px; /* Aligns smoothly with app-container padding */
+    z-index: 1000;
+    background-color: var(--bg-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    padding-bottom: 10px;
+    padding: 20px 0 15px 0;
     border-bottom: 1px solid var(--glass-border);
+    transition: background-color 0.4s ease;
 }
 
 .brand-and-controls {
@@ -252,6 +257,31 @@ body {
 .fc-extra { display: flex; gap: 10px; font-size: 0.8rem; color: var(--text-muted); background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 8px; margin-top: 5px; }
 .fc-extra i { color: #3b82f6; }
 
+/* --- Footer --- */
+.app-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+.footer-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+.footer-links a:hover {
+    color: var(--accent-color);
+}
+
 /* --- Responsive & Adaptive Layout --- */
 
 @media (max-width: 1024px) {
@@ -267,12 +297,12 @@ body {
     .hero-panel { grid-column: 1 / 2; grid-row: 1 / 3; }
     .metrics-grid { grid-column: 2 / 3; }
     .aqi-panel { grid-column: 2 / 3; }
-    .top-header { position: sticky; top: 0; z-index: 100; background: var(--bg-color); padding-bottom: 10px;}
+    .top-header { top: 0; }
 }
 
 /* Updated Mobile View for Header */
 @media (max-width: 768px) {
-    .top-header { flex-direction: column; align-items: stretch; }
+    .top-header { flex-direction: column; align-items: stretch; position: relative; top: 0; padding: 0 0 15px 0;}
     .brand-and-controls { justify-content: space-between; width: 100%; }
     .greeting-container { text-align: left; order: 3; margin-top: 10px; }
     .profile-widget { order: 4; width: 100%; justify-content: center; margin-top: 10px; }
