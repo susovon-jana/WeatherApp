@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Weather App</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-header">
+            <div class="greeting-container">
+                <h1 id="dynamic-greeting">Hello!</h1>
+                <p class="date-display" id="current-date"></p>
+            </div>
+
+            <div class="global-controls">
+                <button id="unit-toggle" class="control-btn" title="Toggle °C / °F">°C</button>
+                <button id="theme-toggle" class="control-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+            </div>
+
+            <a href="https://dr-susovon.pages.dev" target="_blank" class="profile-widget">
+                <div class="profile-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="profile-info">
+                    <span class="profile-name">Susovon Jana, Ph.D.</span>
+                    <span class="profile-link-text">Visit Profile &rarr;</span>
+                </div>
+            </a>
+        </header>
+
+        <nav class="locations-nav glass-panel">
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="city-search" placeholder="Search city..." autocomplete="off">
+                <button id="gps-btn" title="Use Current Location"><i class="fas fa-location-crosshairs"></i></button>
+            </div>
+            
+            <div class="quick-cities" id="indian-cities-container">
+                </div>
+            
+            <div class="dropdowns-container">
+                <select id="global-capitals" class="custom-select">
+                    <option value="" disabled selected>Global Capitals</option>
+                    </select>
+                
+                <select id="favorite-locations" class="custom-select">
+                    <option value="" disabled selected>Saved Favorites</option>
+                    </select>
+            </div>
+        </nav>
+
+        <main class="dashboard-grid">
+            <section class="current-weather glass-panel hero-panel">
+                <div class="weather-header">
+                    <h2 id="current-location-name" style="font-size: 1.5rem; line-height: 1.3;">Loading Location...</h2>
+                    <button id="save-fav-btn" title="Save to Favorites"><i class="far fa-heart"></i></button>
+                </div>
+                <div class="weather-main-info">
+                    <div class="temp-wrapper">
+                        <span id="current-temp">--</span><span class="unit-symbol">°C</span>
+                    </div>
+                    <div class="condition-wrapper">
+                        <i id="current-icon" class="fas fa-cloud-sun weather-icon-large"></i>
+                        <p id="current-condition">Loading...</p>
+                    </div>
+                </div>
+                <div class="temp-details">
+                    <p class="feels-like">Feels like: <span id="current-feels-like">--</span>°</p>
+                    <p class="high-low">H: <span id="today-high">--</span>° | L: <span id="today-low">--</span>°</p>
+                </div>
+            </section>
+
+            <section class="metrics-grid">
+                <div class="metric-card glass-panel">
+                    <i class="fas fa-tint metric-icon"></i>
+                    <div class="metric-info">
+                        <span class="metric-label">Humidity</span>
+                        <span class="metric-value" id="current-humidity">--%</span>
+                    </div>
+                </div>
+                <div class="metric-card glass-panel">
+                    <i class="fas fa-wind metric-icon"></i>
+                    <div class="metric-info">
+                        <span class="metric-label">Wind</span>
+                        <span class="metric-value" id="current-wind">-- km/h</span>
+                    </div>
+                </div>
+                <div class="metric-card glass-panel">
+                    <i class="fas fa-sun metric-icon"></i>
+                    <div class="metric-info">
+                        <span class="metric-label">Sunrise/Sunset</span>
+                        <span class="metric-value" id="sun-times">--:-- / --:--</span>
+                    </div>
+                </div>
+                <div class="metric-card glass-panel">
+                    <i class="fas fa-cloud-rain metric-icon"></i>
+                    <div class="metric-info">
+                        <span class="metric-label">Precipitation</span>
+                        <span class="metric-value" id="current-precip">-- mm</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="aqi-panel glass-panel">
+                <h3>Air Quality Index (US AQI)</h3>
+                <div class="aqi-display">
+                    <div class="aqi-main">
+                        <span id="aqi-value" class="aqi-score">--</span>
+                        <span id="aqi-status" class="aqi-text">--</span>
+                    </div>
+                    <div class="aqi-details">
+                        <div class="aqi-item"><span>PM2.5</span><span id="pm25-val">--</span></div>
+                        <div class="aqi-item"><span>PM10</span><span id="pm10-val">--</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="compare-panel glass-panel">
+                <h3>Compare Cities</h3>
+                <div class="compare-controls">
+                    <input type="text" id="compare-city-1" placeholder="City 1 (e.g., Mumbai)">
+                    <span class="vs">VS</span>
+                    <input type="text" id="compare-city-2" placeholder="City 2 (e.g., London)">
+                    <button id="compare-btn" class="primary-btn">Compare</button>
+                </div>
+                <div id="compare-results" class="compare-results hidden"></div>
+            </section>
+        </main>
+
+        <section class="forecast-section glass-panel">
+            <h3>14-Day Forecast</h3>
+            <div class="forecast-scroll" id="forecast-container">
+                </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
