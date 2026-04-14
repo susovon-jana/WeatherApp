@@ -407,7 +407,7 @@
         <div class="doc-hero-meta">
             <div class="meta-item"><i class="fas fa-calendar"></i> <strong>Year:</strong> 2025–2026</div>
             <div class="meta-item"><i class="fas fa-code-branch"></i> <strong>Version:</strong> 1.0</div>
-            <div class="meta-item"><i class="fas fa-weight-scale"></i> <strong>Size:</strong> ~3 files (merged)</div>
+            <div class="meta-item"><i class="fas fa-weight-scale"></i> <strong>Size:</strong> ~3 files </div>
             <div class="meta-item"><i class="fas fa-bolt"></i> <strong>Stack:</strong> Vanilla JS + CSS</div>
         </div>
     </div>
@@ -425,7 +425,7 @@
                     <a href="https://dr-susovon.pages.dev" target="_blank" class="author-link">
                         <i class="fas fa-globe"></i> Portfolio
                     </a>
-                    <a href="https://github.com/susovon-jana/WeatherApp" target="_blank" class="author-link">
+                    <a href="https://github.com/susovon-jana" target="_blank" class="author-link">
                         <i class="fab fa-github"></i> GitHub
                     </a>
                 </div>
@@ -477,7 +477,7 @@
     <section id="structure">
         <h2 class="section-title"><i class="fas fa-folder-tree"></i> File Structure</h2>
         <div class="section-divider"></div>
-        <p>The original project was split into <strong>14 files</strong> for development. The production version merges these into <strong>3 files</strong> for simplicity and portability.</p>
+        <p>The production version is <strong>3 files</strong> for simplicity and portability.</p>
 
         <div class="file-tree">
             <span class="dir">skycast/</span><br>
@@ -486,27 +486,6 @@
             &nbsp;&nbsp;<span class="file">├── app.js</span>             <span class="note">← ALL JavaScript merged</span><br>
             &nbsp;&nbsp;<span class="file">└── documentation.html</span> <span class="note">← this file</span>
         </div>
-
-        <p style="margin-top:16px;">The 3-file merged version is equivalent to the original 14-file structure:</p>
-
-        <table>
-            <thead>
-                <tr><th>Original File</th><th>Merged Into</th><th>Purpose</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>index.html</td><td>index.html</td><td>Full HTML markup and DOM structure</td></tr>
-                <tr><td>base.css</td><td>styles.css §1–2</td><td>CSS variables (dark/light themes), reset, typography</td></tr>
-                <tr><td>layout.css</td><td>styles.css §3–9</td><td>Ambient orbs, loading screen, header, nav, grid, footer</td></tr>
-                <tr><td>components.css</td><td>styles.css §10–14</td><td>Hero card, metrics, AQI, compare, forecast cards</td></tr>
-                <tr><td>animations.css</td><td>styles.css §15</td><td>Keyframes, stagger effects, reduced-motion support</td></tr>
-                <tr><td>responsive.css</td><td>styles.css §16</td><td>Breakpoints: 1200px, 1024px, 768px, 480px, landscape</td></tr>
-                <tr><td>config.js</td><td>app.js §1</td><td>App state, city lists, weather/AQI/UV lookup tables</td></tr>
-                <tr><td>utils.js</td><td>app.js §2</td><td>Conversion functions, toast, debounce, favorites helpers</td></tr>
-                <tr><td>api.js</td><td>app.js §3</td><td>All fetch logic: geocoding, weather, AQI, GPS, compare</td></tr>
-                <tr><td>render.js</td><td>app.js §4</td><td>All DOM rendering: hero, metrics, AQI, hourly, forecast</td></tr>
-                <tr><td>app.js</td><td>app.js §5</td><td>Init, event listeners, theme/unit toggle, compare handler</td></tr>
-            </tbody>
-        </table>
     </section>
 
     <!-- Data Flow -->
@@ -625,7 +604,7 @@ python -m http.server 8080
         <div class="code-block">
 <pre><span class="comment"># First-time setup</span>
 git init
-git remote add origin https://github.com/susovon-jana/WeatherApp.git
+git remote add origin https://github.com/username/WeatherApp.git
 git add .
 git commit -m <span class="string">"First commit"</span>
 git branch -M main
@@ -733,7 +712,6 @@ git push</pre>
 
         <p style="margin-top: 20px; text-align:center; color: var(--dim); font-size:0.82rem;">
             SkyCast Documentation — Built by <a href="https://dr-susovon.pages.dev" target="_blank" style="color:var(--accent)">Susovon Jana, Ph.D.</a> · 
-            Source: <a href="https://github.com/susovon-jana/WeatherApp" target="_blank" style="color:var(--accent)">GitHub</a> ·
             Live: <a href="https://sky-cast.pages.dev" target="_blank" style="color:var(--accent)">sky-cast.pages.dev</a>
         </p>
     </section>
