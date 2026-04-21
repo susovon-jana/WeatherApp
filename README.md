@@ -10,7 +10,7 @@
 
 **A full-featured, real-time weather app built with pure HTML, CSS and JavaScript — no frameworks, no build tools, no API keys.**
 
-[🌐 Live Demo](https://sky-cast.pages.dev) · [📖 Full Docs](./documentation.html) · [👤 Developer Portfolio](https://dr-susovon.pages.dev)
+[🌐 Live Demo](https://sky-cast.pages.dev) · [📖 Full Docs](https://sky-cast.pages.dev/documentation) · [👤 Developer Portfolio](https://dr-susovon.pages.dev)
 
 </div>
 
