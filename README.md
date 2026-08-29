@@ -1,386 +1,287 @@
-# ☁️ SkyCast — Advanced Weather Intelligence
-
 <div align="center">
 
-![SkyCast Banner](https://img.shields.io/badge/SkyCast-Advanced%20Weather-3b82f6?style=for-the-badge&logo=cloud&logoColor=white)
-![Vanilla JS](https://img.shields.io/badge/Vanilla-JavaScript-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)
-![CSS3](https://img.shields.io/badge/CSS3-No%20Framework-264de4?style=for-the-badge&logo=css3&logoColor=white)
-![No API Key](https://img.shields.io/badge/API%20Keys-None%20Required-10b981?style=for-the-badge)
-![Deployed on Cloudflare](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-f38020?style=for-the-badge&logo=cloudflare&logoColor=white)
+# ☀️ SkyCast — Advanced Weather Intelligence
 
-**A full-featured, real-time weather app built with pure HTML, CSS and JavaScript — no frameworks, no build tools, no API keys.**
+**A modern, dependency-free weather app. Search any city on Earth, save locations that actually load back, read the rain radar, and install it as an app.**
 
-[🌐 Live Demo](https://sky-cast.pages.dev) · [📖 Full Docs](https://sky-cast.pages.dev/documentation) · [👤 Developer Portfolio](https://dr-susovon.pages.dev)
+[![Version](https://img.shields.io/badge/version-2.0.0-3b82f6?style=flat-square)](#-changelog)
+[![License: MIT](https://img.shields.io/badge/license-MIT-10b981?style=flat-square)](LICENSE)
+[![No API key needed](https://img.shields.io/badge/API%20keys-none-f59e0b?style=flat-square)](#-data-sources)
+[![Vanilla JS](https://img.shields.io/badge/vanilla-JS%20%2B%20CSS-a855f7?style=flat-square)](#-tech-stack)
+
+[Live Demo](https://sky-cast.pages.dev) · [Documentation](documentation.html) · [Developer](https://dr-susovon.pages.dev)
+
+*Designed & Developed by **[Susovon Jana, Ph.D.](https://dr-susovon.pages.dev)***
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 📖 Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Screenshots & UI](#-ui-highlights)
-- [Tech Stack](#-tech-stack)
-- [File Structure](#-file-structure)
-- [Data Flow](#-data-flow)
-- [APIs Used](#-apis-used)
-- [Local Setup](#-local-setup)
-- [Deployment](#-deployment)
-- [JS Module Reference](#-javascript-module-reference)
-- [CSS Architecture](#-css-architecture)
-- [Configuration](#-configuration)
-- [Developer](#-developer)
-
----
-
-## 🌤 Overview
-
-SkyCast is a production-quality weather dashboard that delivers real-time weather conditions, air quality, hourly and 14-day forecasts — all with zero dependencies and zero API keys. It uses only browser-native APIs, free open-data weather services, and hand-crafted CSS for a polished glassmorphism UI with dark and light theme support.
-
-**Why it exists:** To demonstrate that modern, beautiful, data-rich web apps can be built with nothing but the platform — no React, no Vue, no webpack, no npm.
+1. [What's New in v2.0](#-whats-new-in-v20)
+2. [Features](#-features)
+3. [Quick Start](#-quick-start)
+4. [Project Structure](#-project-structure)
+5. [How It Works](#-how-it-works)
+6. [Data Sources](#-data-sources)
+7. [User Guide](#-user-guide)
+8. [Customization Guide](#-customization-guide)
+9. [Deployment](#-deployment)
+10. [Troubleshooting](#-troubleshooting)
+11. [Tech Stack](#-tech-stack)
+12. [Changelog](#-changelog)
+13. [License](#-license)
 
 ---
 
-## ✨ Features
+## ✨ What's New in v2.0
 
-| Feature | Description |
-|---|---|
-| 📍 **GPS Auto-Location** | Browser Geolocation API with reverse geocoding to village/area level |
-| 🌡️ **Live Current Weather** | Temperature, feels-like, humidity, wind, pressure, UV index, visibility, precipitation |
-| 🕐 **24-Hour Forecast** | Hourly strip with rain probability and weather icon per hour |
-| 📅 **14-Day Forecast** | Extended daily forecast with high/low, rain probability, and average humidity |
-| 🍃 **Air Quality Index** | US AQI animated ring gauge + PM2.5, PM10, NO₂, O₃ pollutant bars with health advice |
-| 🆚 **City Comparison** | Side-by-side weather comparison of any two cities worldwide |
-| ❤️ **Saved Favorites** | Up to 8 locations saved to `localStorage` for quick access |
-| ☀️ **Sun Progress Bar** | Real-time sunrise-to-sunset arc with animated sun dot |
-| 🌍 **Global Capitals Dropdown** | 30 pre-loaded world capitals for instant access |
-| 🇮🇳 **Indian City Chips** | 15 major Indian cities as one-click quick-nav tabs |
-| 🌓 **Dark / Light Theme** | System-preference auto-detection + manual toggle, persisted to `localStorage` |
-| °C / °F **Unit Toggle** | Instant metric/imperial switching with live re-render |
-| 🕰️ **Local Time Clock** | Live clock ticking in the queried location's timezone |
-| 📱 **Fully Responsive** | 6 breakpoints covering desktop, tablet, mobile, landscape, and safe areas |
-| ⚡ **No Build Tools** | Works by opening `index.html` via any static server — no npm, no bundler |
+| | Feature | Description |
+|---|---------|-------------|
+| 🔍 | **Live search suggestions** | Type any city → instant suggestions with country flags, states & keyboard navigation (↑ ↓ Enter Esc) |
+| ❤️ | **Saved locations — FIXED** | Favorites now store exact coordinates, so they **always** load back correctly (the old string-based favorites could silently fail) |
+| 💾 | **Instant restore** | The app remembers your last viewed location, units (°C/°F) and theme — reopen and it's exactly where you left it |
+| 📈 | **24-hour trend chart** | Temperature curve + rain-probability bars (Chart.js) |
+| 🛰️ | **Live rain radar** | Animated precipitation radar centered on your location (Leaflet + RainViewer) |
+| ⚠️ | **Weather alerts** | Auto-derived advisories: extreme heat, very-high UV, strong winds, thunderstorms, heavy rain, unhealthy air, low visibility |
+| 🌙 | **Moon phase** | Computed locally — no extra API call |
+| 🎨 | **Dynamic weather theming** | Ambient background orbs subtly retint to match live conditions (clear, rain, storm, snow, fog, night) |
+| 📲 | **Installable PWA** | Add SkyCast to your home screen / desktop — works offline with a service worker |
+| 🔄 | **Auto-refresh** | Data silently refreshes every 15 minutes; manual refresh button too |
+| 📤 | **Share button** | Native share sheet on mobile, clipboard fallback on desktop |
+| ⌨️ | **Keyboard shortcuts** | `/` or `Ctrl+K` jumps to search |
+| 🕘 | **Recent searches** | Your last 6 locations appear when you focus the search box |
+| 🧭 | **Timezone-accurate** | Hourly slices and "today" detection now follow the *viewed city's* local time, not your browser's |
 
----
+## 🌟 Features (full list)
 
-## 🖥️ UI Highlights
+**Core weather**
+- 🌡️ Current conditions: temperature, feels-like, humidity, wind (speed + direction + gusts), precipitation, pressure, visibility, UV index, cloud cover
+- 📅 14-day forecast with rain probability, humidity & UV max
+- ⏰ 24-hour forecast strip + interactive trend chart
+- 🌅 Sunrise / sunset with a live day-progress bar
+- 🌫️ Air Quality Index (US AQI) with PM2.5, PM10, NO₂, O₃ breakdown + health advice
 
-The interface uses a **glassmorphism** design language with:
+**Location intelligence**
+- 🔍 Live autocomplete for **any place worldwide** (cities, towns, villages)
+- 📍 One-tap GPS with reverse-geocoded village/area names
+- ❤️ Up to 12 saved favorites (coordinate-accurate)
+- 🕘 Recent searches history
+- 🏙️ Quick chips for Indian cities + global capitals dropdown
+- ⚖️ Side-by-side city comparison
 
-- Animated ambient background orbs
-- Frosted-glass cards with `backdrop-filter: blur()`
-- Staggered entrance animations on all forecast cards
-- Floating weather icon animation
-- Pulsing sun-dot on the sunrise/sunset progress bar
-- Color-coded metrics (humidity, wind, UV, pressure) with semantic color theming
+**Experience**
+- 🌗 Dark / light themes (auto-detects system preference)
+- 🎨 Dynamic ambient theming that follows the weather
+- ⚠️ Smart weather alert banners
+- 🌙 Moon phase chip
+- 📲 PWA install + offline shell
+- 📱 Fully responsive — desktop grid → mobile cards
 
----
+## 🚀 Quick Start
 
-## 🛠 Tech Stack
+SkyCast is 100% static — no build step, no npm, no framework.
 
-| Layer | Technology |
-|---|---|
-| Markup | HTML5 (semantic, accessible) |
-| Styling | Pure CSS3 — custom properties, CSS Grid, Flexbox, `@keyframes` |
-| Logic | Vanilla JavaScript (ES2020+) — async/await, `Promise.all`, `localStorage` |
-| Fonts | Space Grotesk, Outfit, JetBrains Mono (via Google Fonts) |
-| Icons | Font Awesome 6.5 (via CDN) |
-| Hosting | Cloudflare Pages |
-| Version Control | Git + GitHub |
-
-**No npm. No Node. No React. No Tailwind. No build step.**
-
----
-
-## 📁 File Structure
-
+**Option A — just open it**
+```bash
+# unzip, then double-click index.html
 ```
-skycast/
-├── index.html          ← Full HTML structure & layout
-├── styles.css          ← All styles (16 sections merged)
-├── app.js              ← All JavaScript (5 modules merged)
-└── documentation.html  ← Interactive documentation page
-```
+> Most features work from `file://`, but GPS, the PWA install and the service worker require a local server (browsers restrict them on `file://`).
 
-All source was deliberately kept in **3 core files** for maximum portability — paste them into any static host and it works.
-
-### Internal Module Breakdown
-
-`app.js` is organised into 5 logical sections (originally separate files):
-
-```
-§1 — config.js    App state, city lists, weather/AQI/UV lookup tables
-§2 — utils.js     Temperature conversion, formatting, toast, debounce, favorites
-§3 — api.js       Geocoding, GPS handling, weather fetch, AQI fetch, city compare
-§4 — render.js    All DOM update functions (hero, metrics, AQI, hourly, forecast)
-§5 — app.js       Entry point, event listeners, theme, init()
-```
-
-`styles.css` is organised into 16 sections:
-
-```
-§1  — CSS variables (dark + light theme tokens)
-§2  — Reset, typography, scrollbars, utility classes
-§3  — Ambient background orbs
-§4  — Loading screen
-§5–9 — App wrapper, sticky header, search bar, quick-nav, footer
-§10 — Hero card (temperature, weather icon, sun bar)
-§11 — Metrics panel (6 cards)
-§12 — AQI card (SVG ring, pollutant bars)
-§13 — Compare card
-§14 — Hourly & 14-day forecast sections
-§15 — All @keyframes animations
-§16 — Responsive breakpoints (6 breakpoints + safe areas + reduced-motion)
-```
-
----
-
-## 🔄 Data Flow
-
-```
-User Action (search / GPS / chip click)
-         │
-         ▼
-  1. Geocoding
-     ├─ City name  →  Open-Meteo Geocoding API  →  lat/lon
-     └─ GPS coords →  Nominatim (OSM) reverse   →  location name
-         │
-         ▼
-  2. Parallel API Fetch  (Promise.all)
-     ├─ Open-Meteo Weather API  →  current + hourly + 14-day daily
-     └─ Open-Meteo AQI API     →  US AQI + PM2.5, PM10, NO₂, O₃
-         │
-         ▼
-  3. Data Normalisation
-     └─ Raw responses → currentWeatherData object
-         (hourly sliced to 24h, daily mapped to 14 objects with avg humidity)
-         │
-         ▼
-  4. renderDashboard()
-     ├─ renderHero()      → location, temp, condition, sun bar
-     ├─ renderMetrics()   → 6 metric cards
-     ├─ renderAQI()       → ring gauge + pollutant bars
-     ├─ renderHourly()    → 24 hourly cards
-     └─ renderForecast()  → 14 daily cards
-```
-
----
-
-## 🔌 APIs Used
-
-All APIs are **free** and require **no API key**.
-
-### Open-Meteo Weather API
-- **Endpoint:** `https://api.open-meteo.com/v1/forecast`
-- **Data:** Current conditions, hourly forecast (next 48h), 14-day daily forecast
-- **Parameters used:** `temperature_2m`, `relative_humidity_2m`, `apparent_temperature`, `precipitation`, `weather_code`, `wind_speed_10m`, `wind_direction_10m`, `surface_pressure`, `visibility`, `uv_index`, `cloud_cover`, `sunrise`, `sunset`, `precipitation_probability_max`
-- **Docs:** [open-meteo.com](https://open-meteo.com)
-
-### Open-Meteo Air Quality API
-- **Endpoint:** `https://air-quality-api.open-meteo.com/v1/air-quality`
-- **Data:** `us_aqi`, `pm2_5`, `pm10`, `nitrogen_dioxide`, `ozone`
-- **Docs:** [open-meteo.com/en/docs/air-quality-api](https://open-meteo.com/en/docs/air-quality-api)
-
-### Open-Meteo Geocoding API
-- **Endpoint:** `https://geocoding-api.open-meteo.com/v1/search`
-- **Data:** Lat/lon from city name, used for search and city chips
-- **Docs:** [open-meteo.com/en/docs/geocoding-api](https://open-meteo.com/en/docs/geocoding-api)
-
-### Nominatim / OpenStreetMap
-- **Endpoint:** `https://nominatim.openstreetmap.org/reverse`
-- **Data:** Human-readable location name from GPS coordinates (village → district → state → country)
-- **Docs:** [nominatim.openstreetmap.org](https://nominatim.openstreetmap.org)
-
-> **Note:** SkyCast deliberately avoids any service requiring API key registration. The app works out of the box for anyone who clones it.
-
----
-
-## 🚀 Local Setup
-
-SkyCast needs **no npm install, no build step**. Just a static file server (required for GPS / Geolocation API which does not work over `file://`).
-
-### Option A — VS Code Live Server (Recommended)
-
-1. Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension in VS Code
-2. Right-click `index.html` → **Open with Live Server**
-3. Browser opens at `http://127.0.0.1:5500`
-
-### Option B — Python
+**Option B — local server (recommended)**
 
 ```bash
-cd skycast/
+# Python
 python -m http.server 8080
-# Open http://localhost:8080
-```
 
-### Option C — Node.js
-
-```bash
+# …or Node
 npx serve .
-# Follow the URL printed in terminal
+```
+Then open **http://localhost:8080**
+
+**Option C — preview with demo data (no network needed)**
+```
+http://localhost:8080/index.html?demo
+```
+Loads a built-in sample dataset (`assets/demo-data.json`) — great for UI testing, screenshots and offline development.
+
+**First launch behavior:** the app asks for GPS permission. If you decline, it falls back to Kolkata. From the second visit on, it **instantly restores your last viewed location**.
+
+## 📁 Project Structure
+
+```
+WeatherApp/
+├── index.html              ← main app (all UI sections)
+├── documentation.html      ← technical documentation page
+├── manifest.json           ← PWA manifest (name, icons, colors)
+├── sw.js                   ← service worker (offline shell + caching)
+├── LICENSE                 ← MIT license
+├── README.md               ← this guide
+├── .gitignore
+│
+├── assets/
+│   ├── favicon.svg         ← brand icon (vector)
+│   ├── icons/              ← generated PWA icons (180/192/512 px)
+│   └── demo-data.json      ← sample dataset for ?demo mode
+│
+├── css/                    ← styles split by responsibility
+│   ├── base.css            ← variables, theming, reset, ambient bg, loader
+│   ├── layout.css          ← header, search bar, quick nav, grid, footer
+│   ├── components.css      ← hero, metrics, AQI, compare, forecast,
+│   │                          suggestions dropdown, alerts, chart, radar map
+│   └── responsive.css      ← animations, keyframes, mobile fixes,
+│                              dynamic weather themes (body[data-wx])
+│
+└── js/                     ← logic split by responsibility (load order matters)
+    ├── config.js           ← constants: APIs, weather codes, city lists, state
+    ├── utils.js            ← helpers + localStorage stores (favorites/recents/
+    │                          last location/units) + date-time + formatting
+    ├── api.js              ← all fetching: geocoding, weather, AQI, GPS,
+    │                          reverse geocode, compare, radar frames, demo mode
+    ├── search.js           ← live suggestions module (debounce, keyboard nav)
+    ├── charts.js           ← 24-hour Chart.js trend (temp line + rain bars)
+    ├── map.js              ← Leaflet rain radar with animated frames
+    ├── render.js           ← every DOM rendering function + alerts + theming
+    └── app.js              ← init, events, auto-refresh, share, PWA install
 ```
 
-> ⚠️ **GPS will not work** if you open `index.html` directly as a `file://` URL. Always use a local server.
+## 🧠 How It Works
 
----
+**1. Every location load funnels through one function**
+`loadLocation(lat, lon, label)` in `api.js` — GPS, search picks, favorites, city chips and capitals all end up here. It fetches weather + air quality in parallel, processes the data, renders the dashboard, and **persists the location** to `localStorage`.
 
-## ☁️ Deployment
+**2. Why saved locations now always work**
+The old version stored favorites as display strings (`"Village, District, State, Country"`) and re-searched that text on load — GPS-derived names often aren't searchable, so favorites failed silently. v2.0 stores `{ id, name, label, lat, lon }`; the dropdown loads favorites **directly by coordinates** with zero geocoding.
 
-SkyCast is a fully static app — deploy to any static host.
+**3. Timezone-accurate hourly data**
+Open-Meteo returns hourly arrays in the *viewed city's* local time. v2.0 computes the current local hour using the API's `utc_offset_seconds`, so "Now" is correct even when you browse another continent.
 
-### Cloudflare Pages (Live version)
+**4. Search suggestions**
+`search.js` debounces your typing (250 ms), queries the Open-Meteo geocoder for up to 8 matches, renders flags + regions, and tracks an out-of-order-response token so fast typing never shows stale results.
 
-1. Push your code to GitHub (see git workflow below)
-2. Log in to [Cloudflare Pages](https://pages.cloudflare.com)
-3. Create a new project → Connect to your GitHub repo
-4. Build command: *(leave empty)*
-5. Output directory: `/`
-6. Deploy — every future `git push` auto-triggers a new deploy
+**5. Offline & PWA**
+`sw.js` precaches the whole shell at install. API responses are cached network-first — if you go offline, the last successful weather data still renders.
 
-**Live URL:** [https://sky-cast.pages.dev](https://sky-cast.pages.dev)
+## 🌐 Data Sources
 
-### GitHub Pages
+All free, all key-less:
 
-1. Go to your repo → **Settings** → **Pages**
-2. Set source to `main` branch, root `/`
-3. Save — the site publishes at `https://username.github.io/WeatherApp`
+| Service | Provides | Endpoint |
+|---------|----------|----------|
+| [Open-Meteo](https://open-meteo.com) | Current, hourly (incl. UV & visibility), 14-day forecast | `api.open-meteo.com/v1/forecast` |
+| [Open-Meteo AQ](https://open-meteo.com/en/docs/air-quality-api) | US AQI, PM2.5, PM10, NO₂, O₃ | `air-quality-api.open-meteo.com` |
+| [Open-Meteo Geocoding](https://open-meteo.com/en/docs/geocoding-api) | City search & suggestions | `geocoding-api.open-meteo.com` |
+| [Nominatim / OSM](https://nominatim.org) | Reverse geocoding (GPS → place name) | `nominatim.openstreetmap.org` |
+| [RainViewer](https://www.rainviewer.com) | Radar frames for the map | `api.rainviewer.com` |
+| [Esri](https://www.esri.com) | Dark-gray base map tiles | `server.arcgisonline.com` |
 
-### Git Workflow
+## 📱 User Guide
 
-**First-time push:**
-```bash
-git init
-git remote add origin https://github.com/susovon-jana/WeatherApp.git
-git add .
-git commit -m "First commit"
-git branch -M main
-git push -u origin main
-```
+**Search any location**
+Click the search box (or press `/`) → type → pick a suggestion with the mouse or ↑ ↓ + Enter. Your selection is saved to *Recent searches* automatically.
 
-**Every update after that:**
-```bash
-git add .
-git commit -m "update"
-git push
-```
+**Save a favorite**
+Load any location → tap the ♡ heart next to the city name. It's stored with coordinates and appears in the **Saved Favorites** dropdown. Tap again to remove.
 
----
+**Read the radar**
+The *Live Rain Radar* section animates the last hour of radar + 30 min of nowcast. Buttons: prev / play-pause / next. Dragging the map pauses the loop so you can explore.
 
-## 📦 JavaScript Module Reference
+**Share the weather**
+The ↗ share button uses the native share sheet on phones; on desktop it copies a ready-made summary to your clipboard.
 
-| Function | Section | Purpose |
-|---|---|---|
-| `CONFIG` | §1 Config | Global state object: `isMetric`, `favorites[]`, `lastLocation` |
-| `WEATHER_CODES` | §1 Config | WMO code → `{ text, icon, color }` lookup table |
-| `AQI_LEVELS` | §1 Config | AQI thresholds → `{ label, color, advice }` |
-| `UV_LEVELS` | §1 Config | UV index thresholds → `{ label, color }` |
-| `convertTemp(c)` | §2 Utils | Returns °C or °F based on `CONFIG.isMetric` |
-| `convertWind(kmh)` | §2 Utils | Returns km/h or mph string |
-| `getGreeting()` | §2 Utils | Returns time-appropriate greeting string |
-| `getSunProgress()` | §2 Utils | Returns 0–1 fraction of daylight elapsed |
-| `showToast(msg, type)` | §2 Utils | Displays transient bottom-screen notification |
-| `debounce(fn, ms)` | §2 Utils | Standard debounce wrapper |
-| `addFavorite(loc)` | §2 Utils | Adds location to `CONFIG.favorites` + `localStorage` |
-| `handleGPS()` | §3 API | Triggers browser geolocation + reverse geocode + weather load |
-| `fetchCoordinates(city)` | §3 API | Geocodes city name and loads weather |
-| `reverseGeocode(lat, lon)` | §3 API | Converts GPS coords → human-readable location string |
-| `getLiveWeatherData()` | §3 API | Main fetch: calls weather + AQI APIs in parallel via `Promise.all` |
-| `buildHourlyData(weather)` | §3 API | Slices API hourly array to next 24 hours |
-| `buildForecastData(weather)` | §3 API | Maps 14 daily entries with computed avg humidity |
-| `compareCities(c1, c2)` | §3 API | Geocodes + fetches weather for two cities simultaneously |
-| `renderDashboard()` | §4 Render | Master render: calls all sub-renderers in order |
-| `renderHero()` | §4 Render | Location, temperature, condition, unit symbols, sun bar |
-| `renderMetrics()` | §4 Render | 6 metric cards, humidity bar, wind direction, UV color |
-| `renderAQI()` | §4 Render | AQI ring SVG, badge color, 4 pollutant bars, health advice |
-| `renderHourly()` | §4 Render | Generates 24 hourly card elements |
-| `renderForecast()` | §4 Render | Generates 14 daily forecast card elements |
-| `startLocalClock()` | §4 Render | 1-second interval displaying location timezone time |
-| `renderFavoritesDropdown()` | §4 Render | Rebuilds the favorites `<select>` from `CONFIG.favorites` |
-| `renderCompareResults()` | §4 Render | Renders side-by-side comparison cards |
-| `init()` | §5 App | Entry point: greet, populate UI, bind events, fire GPS |
-| `setTheme(theme)` | §5 App | Applies `data-theme` to `<html>`, persists to `localStorage` |
-| `setupEventListeners()` | §5 App | Binds all button, input, select, and keyboard events |
+**Install as an app**
+Once served over HTTPS, the download icon appears in the header (Chrome/Edge desktop, Android Chrome, iOS Safari → *Share → Add to Home Screen*).
 
----
+**Units & theme**
+The °C/°F button and the moon/sun toggle persist between visits.
 
-## 🎨 CSS Architecture
+## 🛠️ Customization Guide
 
-Pure CSS3 with **no preprocessor** and **no utility framework**.
+**Change branding (name, site, links)** — edit in three places:
+- `js/config.js` → the `APP_INFO` object
+- `index.html` → the header `profile-chip` and footer links
+- `manifest.json` → `name`, `author`, `website`
 
-| Section | Purpose |
-|---|---|
-| `§1` CSS Variables | 40+ design tokens for dark and light themes (colors, glass effects, shadows) |
-| `§2` Reset | Box-model reset, base typography, scrollbar styling, `.hidden` utility |
-| `§3` Ambient | Animated background orbs with `filter: blur()` |
-| `§4` Loader | Full-screen loading overlay with animated progress bar |
-| `§5–9` Layout | App wrapper, sticky header, search bar, quick-nav, footer |
-| `§10` Hero | 5.5rem temperature display, floating icon, sunrise/sunset progress bar |
-| `§11` Metrics | 6-card 3-column grid with icon color-coding and mini bar chart |
-| `§12` AQI | SVG `stroke-dashoffset` ring animation, pollutant rows, advice text |
-| `§13` Compare | Input wraps, VS divider, 2-column results grid |
-| `§14` Forecast | Horizontally scrollable hourly and daily card strips |
-| `§15` Animations | 12 `@keyframes` including `fade-up`, `temp-pop`, `heart-pop`, `orb-drift` |
-| `§16` Responsive | Breakpoints at 1200px, 1024px, 768px, 480px + landscape + safe areas |
-
-**Theming approach:** Dark is the default (`:root`). Light is applied via `[data-theme="light"]` on `<html>`, toggled by JS and persisted to `localStorage`. The theme also auto-detects `prefers-color-scheme: light`.
-
----
-
-## ⚙️ Configuration
-
-All user-facing configuration lives at the top of `app.js`.
-
-| Key | Type | Default | Purpose |
-|---|---|---|---|
-| `CONFIG.isMetric` | `boolean` | `true` | `true` = °C, `false` = °F |
-| `CONFIG.favorites` | `string[]` | `[]` | Location strings loaded from `localStorage` |
-| `CONFIG.lastLocation` | `object` | `null` | Most recently loaded `{ lat, lon, locationName }` |
-| `INDIAN_CITIES` | `string[]` | 15 cities | Quick-access chips in the nav bar |
-| `GLOBAL_CAPITALS` | `string[]` | 30 cities | Dropdown list of world capital cities |
-
-**To add cities**, simply append to the arrays:
-
+**Add quick-pick cities** — `js/config.js`:
 ```js
-// Add a new city chip
-const INDIAN_CITIES = [
-    "Kolkata", "Mumbai", ..., "Siliguri"
-];
-
-// Add a new global capital
-const GLOBAL_CAPITALS = [
-    "London", "Tokyo", ..., "Reykjavik"
-];
+const INDIAN_CITIES    = [ "Kolkata", … ];   // chips
+const GLOBAL_CAPITALS  = [ "London", … ];    // dropdown
 ```
 
-**Favorites limit:** The app allows up to 8 saved favorites. This can be changed in the `addFavorite()` function in `app.js`:
+**Change favorites limit** — `js/config.js` → `CONFIG.maxFavorites` (default 12).
 
-```js
-if (CONFIG.favorites.length >= 8) { /* change 8 to your limit */ }
+**Change auto-refresh interval** — `js/config.js` → `CONFIG.refreshMs` (default 15 min).
+
+**Tweak alert thresholds** — `js/render.js` → `renderAlerts()` (e.g. change heat advisory from 35 °C, wind from 40 km/h, AQI from 150).
+
+**Add a color theme** — `css/base.css` holds all CSS variables per `[data-theme]`; retint `--accent`, `--glass-bg`, orbs, etc.
+
+**Adjust weather-tint backgrounds** — `css/responsive.css` → the `body[data-wx="…"]` rules.
+
+**Tune chart style** — `js/charts.js` (colors are read from CSS variables automatically).
+
+**Radar colors/opacity** — `js/map.js` → `tileUrl()` color id (`4` = Universal Blue; see RainViewer docs) and the `0.72` opacity. The dark base map (Esri) can be swapped there too.
+
+## 🌍 Deployment
+
+Any static host works. After deploying over **HTTPS**, the PWA install prompt activates automatically.
+
+**Cloudflare Pages (current host)**
+```bash
+git add . && git commit -m "SkyCast v2.0" && git push
 ```
+Build command: *(none)* · Output dir: `/` (root). First-time setup: create the project at [pages.dev](https://pages.dev) → connect the GitHub repo.
 
----
+**GitHub Pages**
+Repo → Settings → Pages → Deploy from branch → `main / (root)`.
 
-## 👤 Developer
+**Netlify / Vercel**
+Drag-and-drop the folder, or connect the repo. No build command, publish directory = root.
 
-**Susovon Jana, Ph.D.**
+## 🔧 Troubleshooting
 
-Researcher, developer, and designer of SkyCast. The project was built as a showcase of what is achievable with pure browser technologies — no frameworks, no build tooling, just clean, well-structured vanilla code.
+| Problem | Cause & Fix |
+|---------|-------------|
+| "Location access denied" | Browser blocked GPS. Use the search box instead, or allow location in site settings. |
+| Search shows nothing | You're offline or the geocoder is unreachable — check the connection; suggestions recover automatically. |
+| Weather card empty / toast error | Open-Meteo may be briefly rate-limited or down. Press the refresh button in a minute. |
+| Radar section blank | RainViewer occasionally restarts tiles — refresh. Radar needs the map visible; it loads lazily. |
+| PWA install icon missing | Serve over HTTPS (or localhost) and open in Chrome/Edge/Safari. Already-installed apps hide the button by design. |
+| Stale UI after an update | Hard-refresh (Ctrl+Shift+R). The service worker updates in the background and activates on next load. |
+| Saved favorites disappeared | v1 stored plain strings; v2 stores coordinate objects. Re-save your favorites once — they'll never break again. |
 
-- 🌐 Portfolio: [dr-susovon.pages.dev](https://dr-susovon.pages.dev)
-- 💻 GitHub: [github.com/susovon-jana](https://github.com/susovon-jana)
-- ☁️ Live App: [sky-cast.pages.dev](https://sky-cast.pages.dev)
+## 🧱 Tech Stack
 
----
+- **Zero frameworks, zero build step** — vanilla HTML5, CSS3, modern JavaScript (ES2020)
+- [Chart.js 4](https://www.chartjs.org) — 24-hour trend chart
+- [Leaflet 1.9](https://leafletjs.com) — radar map
+- [Font Awesome 6](https://fontawesome.com) + Google Fonts (Outfit, Space Grotesk, JetBrains Mono)
+- Storage: `localStorage` (favorites, recents, last location, units, theme)
+
+## 📜 Changelog
+
+**v2.0.0** — Major upgrade
+- ✨ Live search suggestions with flags & keyboard navigation
+- 🐛 **Fixed:** saved locations now store coordinates and always reload
+- 💾 Persistent last location, units, theme, recent searches
+- 📈 24-hour trend chart · 🛰️ animated rain radar · ⚠️ weather alerts · 🌙 moon phase
+- 🎨 dynamic weather theming · 📲 PWA (manifest + service worker + icons)
+- 🔄 auto-refresh + manual refresh · 📤 share · ⌨️ `/` search shortcut
+- 🧭 timezone-accurate hourly slice & "today" detection
+- 🗂️ codebase reorganized into modular `css/` + `js/` folders
+- 📚 this README guide, MIT LICENSE, `.gitignore`, demo mode (`?demo`)
+
+**v1.x** — single-file app: current weather, AQI, 14-day forecast, compare cities, favorites (string-based), theme & unit toggles.
 
 ## 📄 License
 
-This project is personal work by Susovon Jana. All rights reserved. You may clone and run it locally for personal learning purposes. Please do not redistribute or republish as your own work.
+Released under the [MIT License](LICENSE) — free to use, modify and distribute with attribution.
 
----
+Copyright © 2024–2026 **[Susovon Jana, Ph.D.](https://dr-susovon.pages.dev)**
 
 <div align="center">
 
-Made with ☁️ and pure JavaScript by **Susovon Jana, Ph.D.**
+**SkyCast** · Advanced Weather Intelligence · [sky-cast.pages.dev](https://sky-cast.pages.dev)
 
 </div>

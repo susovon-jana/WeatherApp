@@ -1,0 +1,261 @@
+/* ════════════════════════════════════════════════════════
+   SkyCast — BASE — variables, theming, reset, ambient background, loading screen
+   Part 1 of 4 · Loaded from index.html in order:
+   base.css → layout.css → components.css → responsive.css
+   ════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════
+   styles.css — MERGED: base.css + layout.css + components.css
+                        + responsive.css + animations.css
+   SkyCast Advanced Weather App
+   ════════════════════════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 1 — CSS VARIABLES & THEMING  (from base.css)
+══════════════════════════════════════════════════════════ */
+
+/* ── THEME: DARK ────────────────────────────────────────── */
+:root,
+:root[data-theme="dark"] {
+    --bg-base:        #060c18;
+    --bg-surface:     #0d1526;
+    --bg-elevated:    #141f35;
+
+    --glass-bg:       rgba(14, 22, 45, 0.65);
+    --glass-border:   rgba(255, 255, 255, 0.07);
+    --glass-shadow:   0 8px 40px rgba(0, 0, 0, 0.45);
+    --glass-blur:     16px;
+
+    --text-primary:   #e8f0fe;
+    --text-secondary: #7a92b4;
+    --text-muted:     #44587a;
+    --text-accent:    #60a5fa;
+
+    --accent:         #3b82f6;
+    --accent-glow:    rgba(59, 130, 246, 0.3);
+    --accent-hover:   #60a5fa;
+
+    --color-good:     #10b981;
+    --color-moderate: #f59e0b;
+    --color-bad:      #ef4444;
+    --color-hazard:   #7c3aed;
+
+    --orb-1: rgba(59, 130, 246, 0.12);
+    --orb-2: rgba(16, 185, 129, 0.08);
+    --orb-3: rgba(139, 92, 246, 0.07);
+
+    --icon-humidity:  rgba(59, 130, 246, 0.15);
+    --icon-wind:      rgba(99, 102, 241, 0.15);
+    --icon-precip:    rgba(14, 165, 233, 0.15);
+    --icon-vis:       rgba(250, 204, 21, 0.12);
+    --icon-uv:        rgba(251, 146, 60, 0.15);
+    --icon-pressure:  rgba(168, 85, 247, 0.15);
+
+    --c-humidity:     #60a5fa;
+    --c-wind:         #818cf8;
+    --c-precip:       #38bdf8;
+    --c-vis:          #facc15;
+    --c-uv:           #fb923c;
+    --c-pressure:     #c084fc;
+
+    --sun-track:      rgba(255,255,255,0.08);
+    --sun-fill:       linear-gradient(90deg, #f59e0b, #fcd34d);
+}
+
+/* ── THEME: LIGHT ───────────────────────────────────────── */
+:root[data-theme="light"] {
+    --bg-base:        #dbeafe;
+    --bg-surface:     #eff6ff;
+    --bg-elevated:    #ffffff;
+
+    --glass-bg:       rgba(255, 255, 255, 0.62);
+    --glass-border:   rgba(59, 130, 246, 0.15);
+    --glass-shadow:   0 8px 40px rgba(30, 64, 175, 0.12);
+
+    --text-primary:   #0f172a;
+    --text-secondary: #334155;
+    --text-muted:     #94a3b8;
+    --text-accent:    #2563eb;
+
+    --accent:         #2563eb;
+    --accent-glow:    rgba(37, 99, 235, 0.2);
+    --accent-hover:   #1d4ed8;
+
+    --orb-1: rgba(59, 130, 246, 0.09);
+    --orb-2: rgba(16, 185, 129, 0.06);
+    --orb-3: rgba(139, 92, 246, 0.05);
+
+    --icon-humidity:  rgba(59, 130, 246, 0.1);
+    --icon-wind:      rgba(99, 102, 241, 0.1);
+    --icon-precip:    rgba(14, 165, 233, 0.1);
+    --icon-vis:       rgba(234, 179, 8, 0.1);
+    --icon-uv:        rgba(249, 115, 22, 0.1);
+    --icon-pressure:  rgba(168, 85, 247, 0.1);
+
+    --sun-track:      rgba(0,0,0,0.07);
+    --sun-fill:       linear-gradient(90deg, #f59e0b, #fcd34d);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 2 — RESET & TYPOGRAPHY  (from base.css)
+══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Space Grotesk', 'Outfit', system-ui, sans-serif;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* ── ANTI-COPY CSS ADDED HERE ── */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--accent-hover); }
+
+button { font-family: inherit; cursor: pointer; border: none; outline: none; }
+input, select { font-family: inherit; }
+input:focus, select:focus { outline: none; }
+
+/* Scrollbar */
+::-webkit-scrollbar { height: 4px; width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* Utilities */
+.hidden { display: none !important; }
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
+}
+
+.card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.card-title i { color: var(--accent); font-size: 0.85rem; }
+
+.primary-btn {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    white-space: nowrap;
+    width: 100%;
+    justify-content: center;
+}
+.primary-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+.primary-btn:active { transform: translateY(0); }
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 3 — AMBIENT BACKGROUND  (from layout.css)
+══════════════════════════════════════════════════════════ */
+
+.ambient-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+}
+.orb-1 { width: 600px; height: 600px; background: var(--orb-1); top: -200px; left: -100px; }
+.orb-2 { width: 500px; height: 500px; background: var(--orb-2); bottom: 100px; right: -100px; }
+.orb-3 { width: 400px; height: 400px; background: var(--orb-3); top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+.noise-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 4 — LOADING SCREEN  (from layout.css)
+══════════════════════════════════════════════════════════ */
+
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.loading-screen.fade-out { opacity: 0; visibility: hidden; }
+
+.loader-content { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.loader-icon { font-size: 3.5rem; color: var(--accent); animation: pulse-icon 1.5s ease-in-out infinite; }
+.loader-text { font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--text-secondary); letter-spacing: 0.05em; }
+.loader-bar { width: 180px; height: 3px; background: var(--glass-border); border-radius: 4px; overflow: hidden; }
+.loader-fill { height: 100%; background: var(--accent); border-radius: 4px; animation: loader-progress 2s ease forwards; }
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 5 — APP WRAPPER & LAYOUT  (from layout.css)
+══════════════════════════════════════════════════════════ */
+
+.app-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+

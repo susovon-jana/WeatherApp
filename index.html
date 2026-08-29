@@ -5,12 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#060c18">
+    <meta name="description" content="SkyCast — advanced weather intelligence. Live search suggestions, saved locations, 14-day forecast, air quality, rain radar and more.">
     <title>SkyCast — Advanced Weather</title>
+
+    <!-- ══════════════════════════════════════════
+         PWA
+    ══════════════════════════════════════════ -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 
     <!-- ══════════════════════════════════════════
          FAVICON
     ══════════════════════════════════════════ -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='65' cy='38' r='22' fill='%23facc15'/%3E%3Ccircle cx='65' cy='38' r='32' fill='%23fde68a' opacity='0.3'/%3E%3Cpath d='M20 72 A20 20 0 0 1 20 32 A26 26 0 0 1 76 32 A20 20 0 0 1 76 72Z' fill='%23f0f9ff' stroke='%23bae6fd' stroke-width='2'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
     <!-- ══════════════════════════════════════════
          FONTS
@@ -25,14 +33,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- ══════════════════════════════════════════
-         STYLESHEET (merged: base + layout + components + responsive + animations)
+         LEAFLET (radar map)
     ══════════════════════════════════════════ -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+
+    <!-- ══════════════════════════════════════════
+         STYLESHEETS (modular)
+    ══════════════════════════════════════════ -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
     <!-- ══════════════════════════════════════════
          AMBIENT BACKGROUND LAYERS
+         (tinted dynamically via body[data-wx])
     ══════════════════════════════════════════ -->
     <div class="ambient-bg">
         <div class="orb orb-1"></div>
@@ -82,18 +99,30 @@
             </div>
 
             <div class="header-right">
-                <!-- Search Bar -->
+                <!-- Search Bar + live suggestions -->
                 <div class="search-bar" id="search-bar">
                     <i class="fas fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="city-search" placeholder="Search city..." autocomplete="off" spellcheck="false">
+                    <input type="text" id="city-search" placeholder='Search any city…  ( press "/" )' autocomplete="off" spellcheck="false">
                     <button id="gps-btn" class="gps-btn" title="Use GPS Location">
                         <i class="fas fa-location-crosshairs"></i>
                     </button>
+
+                    <!-- Live suggestions dropdown (powered by search.js) -->
+                    <div class="suggestions-box" id="suggestions-box"></div>
                 </div>
 
                 <!-- Controls -->
                 <div class="header-controls">
                     <button id="unit-toggle" class="ctrl-btn unit-btn" title="Toggle °C / °F">°C</button>
+                    <button id="refresh-btn" class="ctrl-btn" title="Refresh weather">
+                        <i class="fas fa-rotate"></i>
+                    </button>
+                    <button id="share-btn" class="ctrl-btn" title="Share current weather">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button id="install-btn" class="ctrl-btn install-btn" title="Install SkyCast as an app">
+                        <i class="fas fa-download"></i>
+                    </button>
                     <button id="theme-toggle" class="ctrl-btn" title="Toggle Theme">
                         <i class="fas fa-moon"></i>
                     </button>
@@ -122,6 +151,11 @@
         </nav>
 
         <!-- ────────────────────────────────────
+             WEATHER ALERTS (auto-derived)
+        ──────────────────────────────────────── -->
+        <section class="alerts-banner" id="alerts-banner" aria-live="polite"></section>
+
+        <!-- ────────────────────────────────────
              MAIN DASHBOARD
         ──────────────────────────────────────── -->
         <main class="dashboard" id="dashboard">
@@ -139,9 +173,12 @@
                             <i class="far fa-heart"></i>
                         </button>
                     </div>
-                    <div class="local-time-badge">
-                        <i class="fas fa-clock"></i>
-                        <span id="local-time">--:--</span>
+                    <div class="hero-chips">
+                        <div class="local-time-badge">
+                            <i class="fas fa-clock"></i>
+                            <span id="local-time">--:--</span>
+                        </div>
+                        <span id="moon-chip" class="moon-chip" title="Current moon phase"></span>
                     </div>
                 </div>
 
@@ -157,6 +194,7 @@
                             <span class="sep">·</span>
                             <span>H:<strong id="today-high">--</strong>° L:<strong id="today-low">--</strong>°</span>
                         </div>
+                        <p id="updated-ago" class="updated-ago"></p>
                     </div>
                     <div class="weather-icon-block">
                         <i id="current-icon" class="fas fa-cloud hero-icon"></i>
@@ -332,6 +370,18 @@
         </main><!-- /dashboard -->
 
         <!-- ────────────────────────────────────
+             24H TREND CHART
+        ──────────────────────────────────────── -->
+        <section class="chart-section glass-card" id="chart-section">
+            <div class="section-header">
+                <h3 class="card-title"><i class="fas fa-chart-line"></i> 24-Hour Trend</h3>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="trend-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────
              HOURLY FORECAST
         ──────────────────────────────────────── -->
         <section class="forecast-section glass-card" id="hourly-section">
@@ -339,6 +389,24 @@
                 <h3 class="card-title"><i class="fas fa-clock-rotate-left"></i> 24-Hour Forecast</h3>
             </div>
             <div class="hourly-scroll" id="hourly-container"></div>
+        </section>
+
+        <!-- ────────────────────────────────────
+             LIVE RAIN RADAR
+        ──────────────────────────────────────── -->
+        <section class="map-section glass-card" id="map-section">
+            <div class="map-toolbar">
+                <h3 class="card-title"><i class="fas fa-satellite-dish"></i> Live Rain Radar</h3>
+            </div>
+            <div class="map-canvas" id="radar-canvas">
+                <div class="map-legend"><span class="dot"></span> Precipitation radar</div>
+                <div class="map-frame-controls">
+                    <button id="radar-prev-btn" title="Previous frame"><i class="fas fa-backward-step"></i></button>
+                    <button id="radar-play-btn" title="Play / pause"><i class="fas fa-pause"></i></button>
+                    <button id="radar-next-btn" title="Next frame"><i class="fas fa-forward-step"></i></button>
+                    <span id="radar-frame-label" class="map-frame-label">--:--</span>
+                </div>
+            </div>
         </section>
 
         <!-- ────────────────────────────────────
@@ -362,16 +430,17 @@
                         <path d="M10 46 A12 12 0 0 1 10 22 A16 16 0 0 1 46 22 A12 12 0 0 1 46 46Z" fill="currentColor" opacity="0.7"/>
                     </svg>
                     <div>
-                        <p class="footer-title">SkyCast</p>
+                        <p class="footer-title">SkyCast <span style="font-size:0.68rem;color:var(--text-muted);font-weight:500;">v2.0</span></p>
                         <p class="footer-sub">Advanced Weather Intelligence</p>
                     </div>
                 </div>
                 <div class="footer-info">
-                    <p>Data: <a href="https://open-meteo.com" target="_blank">Open-Meteo</a> · Geocoding: <a href="https://nominatim.openstreetmap.org" target="_blank">Nominatim/OSM</a></p>
+                    <p>Data: <a href="https://open-meteo.com" target="_blank">Open-Meteo</a> · Radar: <a href="https://www.rainviewer.com" target="_blank">RainViewer</a> · Geocoding: <a href="https://nominatim.openstreetmap.org" target="_blank">Nominatim/OSM</a></p>
                     <p>Designed &amp; Developed by <a href="https://dr-susovon.pages.dev" target="_blank">Susovon Jana, Ph.D.</a></p>
                 </div>
                 <div class="footer-links">
                     <a href="https://dr-susovon.pages.dev" target="_blank"><i class="fas fa-globe"></i> Profile</a>
+                    <a href="https://github.com/susovon-jana/WeatherApp" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                     <a href="documentation.html" target="_blank"><i class="fas fa-book"></i> Docs</a>
                 </div>
             </div>
@@ -379,9 +448,27 @@
 
     </div><!-- /app-wrapper -->
 
+    <!-- Back to top -->
+    <button id="back-to-top" class="back-to-top" title="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- ══════════════════════════════════════════
-         SCRIPTS (merged: config + utils + api + render + app)
+         LIBRARIES (CDN)
     ══════════════════════════════════════════ -->
-    <script src="app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- ══════════════════════════════════════════
+         APP SCRIPTS (modular — load order matters)
+    ══════════════════════════════════════════ -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,29 @@
+{
+    "name": "SkyCast — Advanced Weather",
+    "short_name": "SkyCast",
+    "description": "Advanced weather intelligence: live search suggestions, saved locations, 14-day forecast, air quality, rain radar and more.",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#060c18",
+    "theme_color": "#060c18",
+    "lang": "en",
+    "categories": ["weather", "utilities"],
+    "icons": [
+        {
+            "src": "assets/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "assets/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "author": "Susovon Jana, Ph.D.",
+    "website": "https://dr-susovon.pages.dev"
+}

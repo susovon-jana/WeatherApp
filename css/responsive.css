@@ -1,0 +1,367 @@
+/* ════════════════════════════════════════════════════════
+   SkyCast — ANIMATIONS & RESPONSIVE — keyframes, mobile-first fixes
+   Part 4 of 4 · Loaded from index.html in order:
+   base.css → layout.css → components.css → responsive.css
+   ════════════════════════════════════════════════════════ */
+
+@keyframes pulse-icon {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.1); opacity: 0.75; }
+}
+@keyframes loader-progress {
+    0%   { width: 0%; }
+    60%  { width: 75%; }
+    100% { width: 100%; }
+}
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes scale-in {
+    from { opacity: 0; transform: scale(0.93); }
+    to   { opacity: 1; transform: scale(1); }
+}
+@keyframes orb-drift-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(40px, -30px) scale(1.05); }
+    66%       { transform: translate(-20px, 20px) scale(0.97); }
+}
+@keyframes orb-drift-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%       { transform: translate(-50px, 30px) scale(1.08); }
+}
+@keyframes orb-drift-3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%       { transform: translate(-48%, -52%) scale(1.06); }
+}
+.orb-1 { animation: orb-drift-1 18s ease-in-out infinite; }
+.orb-2 { animation: orb-drift-2 22s ease-in-out infinite; }
+.orb-3 { animation: orb-drift-3 26s ease-in-out infinite; }
+
+@keyframes icon-float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+}
+.hero-icon { animation: icon-float 3.5s ease-in-out infinite; }
+
+@keyframes sun-pulse {
+    0%, 100% { box-shadow: 0 0 8px #facc1580; }
+    50%       { box-shadow: 0 0 18px #facc15cc; }
+}
+.sun-dot { animation: sun-pulse 2.5s ease-in-out infinite; }
+
+@keyframes spin-once {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+.gps-btn.locating i { animation: spin-once 1s linear infinite; }
+
+.forecast-card:nth-child(1)  { animation: fade-up 0.3s ease both 0.05s; }
+.forecast-card:nth-child(2)  { animation: fade-up 0.3s ease both 0.10s; }
+.forecast-card:nth-child(3)  { animation: fade-up 0.3s ease both 0.15s; }
+.forecast-card:nth-child(4)  { animation: fade-up 0.3s ease both 0.20s; }
+.forecast-card:nth-child(5)  { animation: fade-up 0.3s ease both 0.25s; }
+.forecast-card:nth-child(6)  { animation: fade-up 0.3s ease both 0.30s; }
+.forecast-card:nth-child(7)  { animation: fade-up 0.3s ease both 0.35s; }
+.forecast-card:nth-child(8)  { animation: fade-up 0.3s ease both 0.38s; }
+.forecast-card:nth-child(9)  { animation: fade-up 0.3s ease both 0.40s; }
+.forecast-card:nth-child(10) { animation: fade-up 0.3s ease both 0.42s; }
+.forecast-card:nth-child(11) { animation: fade-up 0.3s ease both 0.44s; }
+.forecast-card:nth-child(12) { animation: fade-up 0.3s ease both 0.46s; }
+.forecast-card:nth-child(13) { animation: fade-up 0.3s ease both 0.48s; }
+.forecast-card:nth-child(14) { animation: fade-up 0.3s ease both 0.50s; }
+
+.hourly-card { animation: fade-in 0.25s ease both; }
+
+.metric-card:nth-child(1) { animation: scale-in 0.35s ease both 0.10s; }
+.metric-card:nth-child(2) { animation: scale-in 0.35s ease both 0.15s; }
+.metric-card:nth-child(3) { animation: scale-in 0.35s ease both 0.20s; }
+.metric-card:nth-child(4) { animation: scale-in 0.35s ease both 0.25s; }
+.metric-card:nth-child(5) { animation: scale-in 0.35s ease both 0.30s; }
+.metric-card:nth-child(6) { animation: scale-in 0.35s ease both 0.35s; }
+
+@keyframes temp-pop {
+    0%   { transform: scale(0.9); opacity: 0; }
+    70%  { transform: scale(1.03); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.temp-value.updated { animation: temp-pop 0.4s ease forwards; }
+
+@keyframes heart-pop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    100% { transform: scale(1); }
+}
+.fav-btn.popped i { animation: heart-pop 0.35s ease; }
+
+@keyframes slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.compare-results:not(.hidden) { animation: slide-down 0.3s ease; }
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 16 — RESPONSIVE / MOBILE-FIRST FIXES
+   (Merged + heavily improved from responsive.css)
+══════════════════════════════════════════════════════════ */
+
+/* ── LARGE (≤1200px) ────────────────────────────────────── */
+@media (max-width: 1200px) {
+    .dashboard {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        grid-template-rows: auto auto auto;
+    }
+    .hero-card    { grid-column: 1; grid-row: 1 / 3; }
+    .metrics-panel { grid-column: 2; grid-row: 1; grid-template-columns: repeat(2, 1fr); }
+    .aqi-card     { grid-column: 2; grid-row: 2; }
+    .compare-card { grid-column: 1 / -1; grid-row: 3; }
+}
+
+/* ── TABLET LANDSCAPE (≤1024px) ─────────────────────────── */
+@media (max-width: 1024px) {
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+    .hero-card    { grid-column: 1 / -1; grid-row: auto; }
+    .metrics-panel { grid-column: 1 / -1; grid-row: auto; grid-template-columns: repeat(3, 1fr); }
+    .aqi-card     { grid-column: 1; grid-row: auto; }
+    .compare-card { grid-column: 2; grid-row: auto; }
+
+    .temp-value { font-size: 4.5rem; }
+    .hero-icon  { font-size: 3.8rem; }
+
+    /* Profile chip: hide text, keep icon */
+    .profile-chip-text { display: none; }
+    .profile-chip { padding: 7px 10px; }
+}
+
+/* ── TABLET PORTRAIT (≤768px) ───────────────────────────── */
+@media (max-width: 768px) {
+    .app-wrapper { padding: 0 12px 24px; gap: 12px; }
+
+    /* ── HEADER: stays on one tight row, no wrap ── */
+    .top-header {
+        flex-wrap: nowrap;
+        padding: 8px 12px;
+        gap: 8px;
+    }
+
+    .header-left { gap: 10px; }
+
+    /* Hide greeting to save space */
+    .header-greeting { display: none; }
+
+    /* Brand tighter */
+    .brand-name { font-size: 1.25rem; }
+    .brand-logo { width: 28px; height: 28px; }
+
+    .header-right { gap: 7px; }
+
+    /* Search takes available space */
+    .search-bar { max-width: none; flex: 1; min-width: 0; padding: 6px 10px; }
+
+    /* Hide profile chip on mobile */
+    .profile-chip { display: none; }
+
+    /* ── NAV: chips scroll horizontally, selects stack below on very small ── */
+    .quick-nav { flex-wrap: wrap; padding: 8px 12px; gap: 8px; }
+    .nav-selects { width: 100%; }
+    .styled-select { max-width: 49%; flex: 1; }
+
+    /* ── DASHBOARD: single column ── */
+    .dashboard { grid-template-columns: 1fr; gap: 12px; }
+    .hero-card    { grid-column: 1; grid-row: auto; }
+    .metrics-panel { grid-column: 1; grid-row: auto; grid-template-columns: repeat(2, 1fr); }
+    .aqi-card     { grid-column: 1; grid-row: auto; }
+    .compare-card { grid-column: 1; grid-row: auto; }
+
+    /* Hero */
+    .hero-card { padding: 16px; gap: 14px; }
+    .location-name { font-size: 1.05rem; }
+    .temp-value { font-size: 4rem; letter-spacing: -3px; }
+    .hero-icon  { font-size: 3.2rem; }
+    .unit-symbol { font-size: 1.5rem; margin-top: 10px; }
+
+    /* Sun bar */
+    .sun-bar { padding: 9px 12px; }
+    .sun-time { font-size: 0.78rem; }
+    .sun-label { display: none; }
+
+    /* Metrics */
+    .metric-val { font-size: 1.1rem; }
+
+    /* AQI body: stack vertically */
+    .aqi-body { flex-direction: column; align-items: flex-start; }
+    .aqi-ring { width: 78px; height: 78px; }
+    .aqi-num  { font-size: 1.35rem; }
+
+    /* Forecast */
+    .forecast-section { padding: 14px; }
+    .hourly-card { min-width: 62px; }
+    .forecast-card { min-width: 110px; }
+
+    /* Footer */
+    .footer-inner { flex-direction: column; gap: 14px; text-align: center; }
+    .footer-info  { text-align: center; }
+    .footer-links { justify-content: center; }
+    .footer-brand { justify-content: center; }
+}
+
+/* ── MOBILE SMALL (≤480px) ──────────────────────────────── */
+@media (max-width: 480px) {
+    .app-wrapper { padding: 0 8px 18px; gap: 10px; }
+
+    .brand-name { font-size: 1.1rem; }
+    .brand-logo { width: 24px; height: 24px; }
+    .ctrl-btn   { width: 32px; height: 32px; font-size: 0.75rem; }
+
+    .metrics-panel { grid-template-columns: 1fr 1fr; }
+
+    .temp-value   { font-size: 3.5rem; letter-spacing: -2px; }
+    .hero-icon    { font-size: 2.8rem; }
+    .unit-symbol  { font-size: 1.3rem; margin-top: 8px; }
+    .location-name { font-size: 0.95rem; }
+
+    .pollutant-row { grid-template-columns: 34px 1fr 28px 36px; gap: 4px; }
+
+    .compare-results { grid-template-columns: 1fr 1fr; }
+    .cmp-temp { font-size: 1.5rem; }
+
+    .forecast-card { min-width: 98px; padding: 11px 8px; }
+    .fc-icon { font-size: 1.4rem; }
+    .hourly-card { min-width: 56px; padding: 9px 6px; }
+
+    /* Search bar placeholder shorter */
+    .search-bar input::placeholder { content: 'Search...'; font-size: 0.8rem; }
+
+    .nav-selects { flex-direction: column; gap: 6px; }
+    .styled-select { max-width: 100%; }
+}
+
+/* ── LANDSCAPE PHONE (≤768px landscape) ─────────────────── */
+@media (max-width: 768px) and (orientation: landscape) {
+    .top-header {
+        flex-wrap: nowrap;
+        padding: 6px 12px;
+    }
+    .header-greeting { display: flex; }
+    .profile-chip { display: none; }
+
+    .dashboard { grid-template-columns: 1fr 1fr; }
+    .hero-card    { grid-column: 1 / -1; grid-row: auto; }
+    .metrics-panel { grid-column: 1 / -1; grid-row: auto; grid-template-columns: repeat(6, 1fr); }
+    .aqi-card     { grid-column: 1; grid-row: auto; }
+    .compare-card { grid-column: 2; grid-row: auto; }
+
+    .temp-value { font-size: 3.2rem; }
+    .hero-icon  { font-size: 2.8rem; }
+    .hero-card  { padding: 14px; gap: 12px; }
+
+    .metric-card { padding: 11px; }
+    .metric-val  { font-size: 0.95rem; }
+    .aqi-body { flex-direction: row; }
+    .aqi-ring { width: 68px; height: 68px; }
+}
+
+/* ── TABLET LANDSCAPE (769-1024 landscape) ───────────────── */
+@media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+    .dashboard { grid-template-columns: 1.2fr 1fr 1fr; }
+    .hero-card    { grid-column: 1; grid-row: 1 / 3; }
+    .metrics-panel { grid-column: 2 / 4; grid-row: 1; grid-template-columns: repeat(3, 1fr); }
+    .aqi-card     { grid-column: 2; grid-row: 2; }
+    .compare-card { grid-column: 3; grid-row: 2; }
+}
+
+/* ── SAFE AREAS (notch, home indicator) ──────────────────── */
+@supports (padding: max(0px)) {
+    .top-header {
+        padding-left:  max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+    }
+    .app-wrapper {
+        padding-left:  max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
+    }
+}
+
+/* ── REDUCE MOTION ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 16b — NEW COMPONENTS RESPONSIVE  (suggestions,
+   alerts, chart, map, back-to-top)
+══════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+    .suggestions-box { min-width: 280px; }
+    .map-canvas { height: 320px; }
+}
+
+@media (max-width: 640px) {
+    .suggestions-box {
+        position: fixed;
+        top: 64px;
+        left: 10px; right: 10px;
+        min-width: 0;
+        max-height: 62vh;
+    }
+    .map-canvas { height: 260px; border-radius: 12px; }
+    .chart-wrap { height: 200px; }
+    .chart-section, .map-section { padding: 16px; }
+    .alert-chip { font-size: 0.76rem; padding: 10px 12px; }
+    .back-to-top { bottom: 18px; right: 16px; width: 40px; height: 40px; }
+    .moon-chip { font-size: 0.66rem; padding: 4px 10px; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 16c — DYNAMIC WEATHER THEMING  (body[data-wx])
+   Subtly retints the ambient orbs to match live conditions.
+══════════════════════════════════════════════════════════ */
+
+/* Clear day — warm golden glow */
+body[data-wx="clear-day"] .orb-1 { background: radial-gradient(circle, rgba(250, 204, 21, 0.14), transparent 70%); }
+body[data-wx="clear-day"] .orb-2 { background: radial-gradient(circle, rgba(251, 146, 60, 0.10), transparent 70%); }
+
+/* Clear night — deep indigo + violet */
+body[data-wx="clear-night"] .orb-1 { background: radial-gradient(circle, rgba(99, 102, 241, 0.16), transparent 70%); }
+body[data-wx="clear-night"] .orb-3 { background: radial-gradient(circle, rgba(139, 92, 246, 0.12), transparent 70%); }
+
+/* Cloudy — cool slate */
+body[data-wx="cloudy"] .orb-1 { background: radial-gradient(circle, rgba(148, 163, 184, 0.13), transparent 70%); }
+body[data-wx="cloudy"] .orb-2 { background: radial-gradient(circle, rgba(100, 116, 139, 0.10), transparent 70%); }
+
+/* Rain — teal/blue */
+body[data-wx="rain"] .orb-1 { background: radial-gradient(circle, rgba(14, 165, 233, 0.16), transparent 70%); }
+body[data-wx="rain"] .orb-2 { background: radial-gradient(circle, rgba(6, 182, 212, 0.11), transparent 70%); }
+
+/* Snow — pale ice blue */
+body[data-wx="snow"] .orb-1 { background: radial-gradient(circle, rgba(186, 230, 253, 0.15), transparent 70%); }
+body[data-wx="snow"] .orb-3 { background: radial-gradient(circle, rgba(224, 242, 254, 0.10), transparent 70%); }
+
+/* Thunderstorm — violet flash */
+body[data-wx="storm"] .orb-1 { background: radial-gradient(circle, rgba(139, 92, 246, 0.17), transparent 70%); }
+body[data-wx="storm"] .orb-2 { background: radial-gradient(circle, rgba(88, 28, 135, 0.13), transparent 70%); }
+
+/* Fog / mist — grey wash */
+body[data-wx="fog"] .orb-1 { background: radial-gradient(circle, rgba(203, 213, 225, 0.12), transparent 70%); }
+body[data-wx="fog"] .noise-overlay { opacity: 0.09; }
+
+/* ── MOBILE HERO: stack location & chips so names never crush ── */
+@media (max-width: 640px) {
+    .hero-top { flex-direction: column; align-items: stretch; gap: 10px; }
+    .hero-chips { justify-content: space-between; }
+    .location-name { word-break: normal; overflow-wrap: anywhere; }
+}

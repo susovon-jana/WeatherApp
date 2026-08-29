@@ -1,0 +1,241 @@
+/* ════════════════════════════════════════════════════════
+   SkyCast — LAYOUT — header, search bar, quick nav, dashboard grid, footer
+   Part 2 of 4 · Loaded from index.html in order:
+   base.css → layout.css → components.css → responsive.css
+   ════════════════════════════════════════════════════════ */
+
+.top-header {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    background: rgba(6, 12, 24, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 10px 0;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background 0.4s;
+    flex-wrap: nowrap;   /* keep header on one line */
+}
+
+:root[data-theme="light"] .top-header {
+    background: rgba(219, 234, 254, 0.95);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+/* Brand */
+.brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.brand-logo { width: 34px; height: 34px; color: var(--text-primary); flex-shrink: 0; }
+.brand-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+.brand-accent { color: var(--accent); }
+
+/* Header Greeting */
+.header-greeting { display: flex; flex-direction: column; gap: 1px; }
+.header-date { font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.03em; }
+.header-hello { font-size: 0.86rem; font-weight: 600; color: var(--text-secondary); }
+
+/* Header Right */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 7px 12px;
+    gap: 8px;
+    flex: 1;
+    max-width: 360px;
+    min-width: 0;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-bar:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.search-icon { color: var(--text-muted); font-size: 0.82rem; flex-shrink: 0; }
+.search-bar input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    width: 100%;
+    caret-color: var(--accent);
+    min-width: 0;
+}
+.search-bar input::placeholder { color: var(--text-muted); }
+.gps-btn {
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    padding: 2px;
+    transition: color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+}
+.gps-btn:hover { color: var(--accent); transform: scale(1.15); }
+
+/* Controls */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.ctrl-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+    flex-shrink: 0;
+}
+.ctrl-btn:hover { background: var(--accent); color: white; border-color: var(--accent); transform: scale(1.05); }
+.unit-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+
+/* Profile chip */
+.profile-chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 12px;
+    background: rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 10px;
+    color: var(--text-accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+.profile-chip:hover { background: rgba(37, 99, 235, 0.28); transform: translateY(-1px); color: var(--accent-hover); }
+.profile-arrow { font-size: 0.68rem; }
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 7 — QUICK NAV  (from layout.css)
+══════════════════════════════════════════════════════════ */
+
+.quick-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    flex-wrap: nowrap;   /* single line with scroll chips */
+    overflow: hidden;
+}
+
+.city-chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex: 1;
+    min-width: 0;
+}
+.city-chips::-webkit-scrollbar { display: none; }
+
+.city-chip {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+}
+.city-chip:hover { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-1px); }
+.city-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.nav-selects { display: flex; gap: 8px; flex-shrink: 0; }
+
+.styled-select {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    max-width: 155px;
+}
+.styled-select:hover { border-color: var(--accent); }
+.styled-select option { background: var(--bg-elevated); color: var(--text-primary); }
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 8 — DASHBOARD GRID  (from layout.css)
+══════════════════════════════════════════════════════════ */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 16px;
+}
+
+.hero-card    { grid-column: 1; grid-row: 1 / 3; }
+.metrics-panel { grid-column: 2 / 4; grid-row: 1; }
+.aqi-card     { grid-column: 2; grid-row: 2; }
+.compare-card { grid-column: 3; grid-row: 2; }
+
+
+/* ══════════════════════════════════════════════════════════
+   SECTION 9 — FOOTER  (from layout.css)
+══════════════════════════════════════════════════════════ */
+
+.app-footer { padding: 22px 26px; }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.footer-brand { display: flex; align-items: center; gap: 12px; }
+.footer-logo { width: 30px; height: 30px; color: var(--text-secondary); }
+.footer-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; }
+.footer-sub { font-size: 0.74rem; color: var(--text-muted); }
+.footer-info { font-size: 0.77rem; color: var(--text-secondary); line-height: 1.7; text-align: center; }
+.footer-links { display: flex; gap: 14px; }
+.footer-links a {
+    font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 11px; border: 1px solid var(--glass-border);
+    border-radius: 8px; transition: color 0.2s, border-color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+

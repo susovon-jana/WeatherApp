@@ -464,11 +464,35 @@
             </div>
             <div class="card">
                 <h3><i class="fas fa-heart"></i> Saved Favorites</h3>
-                <p>Up to 8 locations can be saved to browser localStorage for quick one-tap access.</p>
+                <p>Up to 12 locations saved with <strong>exact coordinates</strong> in localStorage — favorites reload instantly and can never fail to geocode.</p>
             </div>
             <div class="card">
                 <h3><i class="fas fa-sun"></i> Sun Progress Bar</h3>
                 <p>Animated sunrise-to-sunset arc showing real-time sun position based on local timezone data.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-magnifying-glass"></i> Live Search Suggestions</h3>
+                <p>Type-ahead autocomplete for any place worldwide — country flags, region subtitles, full keyboard navigation and recent-search history.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> 24-Hour Trend Chart</h3>
+                <p>Chart.js line chart of the next 24 hours: temperature curve with gradient fill plus rain-probability bars on a second axis.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-satellite-dish"></i> Live Rain Radar</h3>
+                <p>Animated precipitation radar centered on the current location, powered by RainViewer and Leaflet with play/pause/step controls.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-triangle-exclamation"></i> Weather Alerts</h3>
+                <p>Auto-derived advisory banners for extreme heat, very-high UV, strong winds, thunderstorms, heavy rain, unhealthy air and low visibility.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-download"></i> Installable PWA</h3>
+                <p>Web app manifest + service worker: installs to home screen or desktop and keeps the shell cached for offline use.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-moon"></i> Moon Phase &amp; Theming</h3>
+                <p>Locally-computed moon phase chip, plus ambient background orbs that retint to match live conditions (clear, rain, storm, snow, fog, night).</p>
             </div>
         </div>
     </section>
@@ -477,14 +501,19 @@
     <section id="structure">
         <h2 class="section-title"><i class="fas fa-folder-tree"></i> File Structure</h2>
         <div class="section-divider"></div>
-        <p>The production version is <strong>3 files</strong> for simplicity and portability.</p>
+        <p>The project is organised into <strong>modular folders</strong> — split by responsibility, easy to maintain and extend.</p>
 
         <div class="file-tree">
             <span class="dir">skycast/</span><br>
             &nbsp;&nbsp;<span class="file">├── index.html</span>         <span class="note">← full HTML structure</span><br>
-            &nbsp;&nbsp;<span class="file">├── styles.css</span>         <span class="note">← ALL styles merged</span><br>
-            &nbsp;&nbsp;<span class="file">├── app.js</span>             <span class="note">← ALL JavaScript merged</span><br>
-            &nbsp;&nbsp;<span class="file">└── documentation.html</span> <span class="note">← this file</span>
+            &nbsp;&nbsp;<span class="file">├── documentation.html</span> <span class="note">← this file</span><br>
+            &nbsp;&nbsp;<span class="file">├── manifest.json</span>      <span class="note">← PWA manifest</span><br>
+            &nbsp;&nbsp;<span class="file">├── sw.js</span>              <span class="note">← service worker (offline)</span><br>
+            &nbsp;&nbsp;<span class="file">├── LICENSE</span>            <span class="note">← MIT license</span><br>
+            &nbsp;&nbsp;<span class="file">├── README.md</span>          <span class="note">← complete user guide</span><br>
+            &nbsp;&nbsp;<span class="dir">├── assets/</span>            <span class="note">← favicon, PWA icons, demo data</span><br>
+            &nbsp;&nbsp;<span class="dir">├── css/</span>               <span class="note">← base · layout · components · responsive</span><br>
+            &nbsp;&nbsp;<span class="dir">└── js/</span>                <span class="note">← config · utils · api · search · charts · map · render · app</span>
         </div>
     </section>
 
@@ -499,7 +528,7 @@
                 <div class="flow-num">1</div>
                 <div class="flow-body">
                     <h4>User Action</h4>
-                    <p>User opens the app, clicks a city chip, types a search, or presses the GPS button.</p>
+                    <p>User opens the app — the last viewed location restores instantly from localStorage. Otherwise: search a suggestion, click a city chip, or press the GPS button.</p>
                 </div>
             </div>
             <div class="flow-step">
@@ -513,21 +542,21 @@
                 <div class="flow-num">3</div>
                 <div class="flow-body">
                     <h4>Parallel API Fetch</h4>
-                    <p>Two API calls fire simultaneously via <code>Promise.all()</code>: the <strong>Open-Meteo weather API</strong> (current + hourly + daily) and the <strong>Open-Meteo Air Quality API</strong> (AQI + pollutants).</p>
+                    <p>Two API calls fire simultaneously via <code>Promise.allSettled()</code>: the <strong>Open-Meteo weather API</strong> (current + hourly + daily) and the <strong>Open-Meteo Air Quality API</strong> (AQI + pollutants). An AQI failure never blocks the weather render.</p>
                 </div>
             </div>
             <div class="flow-step">
                 <div class="flow-num">4</div>
                 <div class="flow-body">
                     <h4>Data Normalisation</h4>
-                    <p>Raw API responses are transformed into a single <code>currentWeatherData</code> object. Hourly data is sliced to the next 24 hours; daily data is iterated into 14 day objects with computed average humidity.</p>
+                    <p>Raw API responses are transformed into a single <code>currentWeatherData</code> object. Hourly data is sliced from the location's <em>timezone-accurate</em> current hour; daily data is iterated into 14 day objects with computed average humidity.</p>
                 </div>
             </div>
             <div class="flow-step">
                 <div class="flow-num">5</div>
                 <div class="flow-body">
                     <h4>Render</h4>
-                    <p><code>renderDashboard()</code> calls each sub-renderer in order: hero → metrics → AQI → hourly → 14-day forecast. All DOM writes use <code>setEl()</code> to safely update elements by ID.</p>
+                    <p><code>renderDashboard()</code> calls each sub-renderer in order: hero → metrics → AQI → hourly → 14-day forecast → alerts → chart → radar. The location is then persisted for the next visit.</p>
                 </div>
             </div>
         </div>
@@ -556,6 +585,16 @@
         <div class="card">
             <h3><i class="fas fa-map-pin"></i> Nominatim / OpenStreetMap <span class="badge badge-green">Free · No Key</span></h3>
             <p>Reverse geocoding — converts GPS coordinates to a human-readable location name (village, district, state, country). <a href="https://nominatim.openstreetmap.org" target="_blank">nominatim.openstreetmap.org</a></p>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-satellite-dish"></i> RainViewer <span class="badge badge-green">Free · No Key</span></h3>
+            <p>Animated precipitation radar frames for the Live Rain Radar map. <a href="https://www.rainviewer.com" target="_blank">rainviewer.com</a></p>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-map"></i> Esri Dark Gray Canvas <span class="badge badge-green">Free</span></h3>
+            <p>Key-less dark base map tiles rendered underneath the radar overlay. <a href="https://www.arcgis.com/home/item.html?id=3b6a2d5b4b3f4a6c9a1f4e0d2b8a9c7e" target="_blank">arcgisonline.com</a></p>
         </div>
 
         <div class="highlight-box">
@@ -635,25 +674,23 @@ git push</pre>
 
         <table>
             <thead>
-                <tr><th>Function</th><th>Module (§)</th><th>Description</th></tr>
+                <tr><th>Module / Function</th><th>File</th><th>Description</th></tr>
             </thead>
             <tbody>
-                <tr><td>CONFIG</td><td>§1 Config</td><td>Global app state: unit preference, favorites array, last location</td></tr>
-                <tr><td>WEATHER_CODES</td><td>§1 Config</td><td>Map of WMO weather codes to icon, color, and text description</td></tr>
-                <tr><td>AQI_LEVELS</td><td>§1 Config</td><td>Array of AQI thresholds with color and health advice</td></tr>
-                <tr><td>convertTemp()</td><td>§2 Utils</td><td>Converts Celsius to °C or °F based on CONFIG.isMetric</td></tr>
-                <tr><td>showToast()</td><td>§2 Utils</td><td>Displays a transient notification message at screen bottom</td></tr>
-                <tr><td>getSunProgress()</td><td>§2 Utils</td><td>Returns 0–1 fraction of daylight elapsed for sun progress bar</td></tr>
-                <tr><td>handleGPS()</td><td>§3 API</td><td>Triggers browser geolocation and calls reverseGeocode + weather</td></tr>
-                <tr><td>fetchCoordinates()</td><td>§3 API</td><td>Geocodes a city name and loads weather for that location</td></tr>
-                <tr><td>getLiveWeatherData()</td><td>§3 API</td><td>Main data-fetch: calls weather + AQI APIs in parallel</td></tr>
-                <tr><td>compareCities()</td><td>§3 API</td><td>Geocodes two cities and fetches weather for both simultaneously</td></tr>
-                <tr><td>renderDashboard()</td><td>§4 Render</td><td>Master render that calls all sub-renderers in sequence</td></tr>
-                <tr><td>renderHero()</td><td>§4 Render</td><td>Updates location name, temperature, condition, sun bar</td></tr>
-                <tr><td>renderAQI()</td><td>§4 Render</td><td>Animates AQI ring, sets badge color, updates pollutant bars</td></tr>
-                <tr><td>startLocalClock()</td><td>§4 Render</td><td>Starts a 1-second interval showing the location's local time</td></tr>
-                <tr><td>init()</td><td>§5 App</td><td>Entry point: populates UI lists, binds events, fires GPS</td></tr>
-                <tr><td>setTheme()</td><td>§5 App</td><td>Toggles dark/light theme on <code>&lt;html&gt;</code> data-theme attribute</td></tr>
+                <tr><td>CONFIG / APP_INFO / API</td><td>js/config.js</td><td>App metadata, API endpoints, persisted state, weather-code &amp; level tables</td></tr>
+                <tr><td>makeLocationObj()</td><td>js/utils.js</td><td>Canonical saved-location shape: <code>{ id, name, label, lat, lon }</code></td></tr>
+                <tr><td>addFavorite() / removeFavorite()</td><td>js/utils.js</td><td>Coordinate-accurate favorites store (localStorage)</td></tr>
+                <tr><td>getMoonPhase()</td><td>js/utils.js</td><td>Locally-computed moon phase with illumination percentage</td></tr>
+                <tr><td>searchGeocode()</td><td>js/api.js</td><td>Multi-result geocoding powering live suggestions</td></tr>
+                <tr><td>loadLocation()</td><td>js/api.js</td><td>★ Master loader: weather + AQI in parallel, normalises, persists, renders</td></tr>
+                <tr><td>compareCities()</td><td>js/api.js</td><td>Geocodes two cities and fetches weather for both simultaneously</td></tr>
+                <tr><td>Search module</td><td>js/search.js</td><td>Debounced suggestions, flag icons, ↑↓/Enter/Esc keyboard navigation, recents</td></tr>
+                <tr><td>TrendChart.render()</td><td>js/charts.js</td><td>24-hour Chart.js trend: temperature line + rain-probability bars</td></tr>
+                <tr><td>RadarMap.refresh()</td><td>js/map.js</td><td>Leaflet rain radar with animated RainViewer frames</td></tr>
+                <tr><td>renderAlerts()</td><td>js/render.js</td><td>Derives heat/UV/wind/storm/rain/AQI/visibility advisories from live data</td></tr>
+                <tr><td>applyWeatherTheme()</td><td>js/render.js</td><td>Sets <code>body[data-wx]</code> so ambient orbs retint to live conditions</td></tr>
+                <tr><td>init() / bootstrapLocation()</td><td>js/app.js</td><td>Entry point: restore last location → GPS → default; binds all events</td></tr>
+                <tr><td>setupInstallPrompt()</td><td>js/app.js</td><td>PWA install button via <code>beforeinstallprompt</code></td></tr>
             </tbody>
         </table>
     </section>
@@ -662,22 +699,15 @@ git push</pre>
     <section id="css">
         <h2 class="section-title"><i class="fas fa-palette"></i> CSS Architecture</h2>
         <div class="section-divider"></div>
-        <p>All styles are written in pure CSS3 using <strong>custom properties (variables)</strong> for theming and a <strong>CSS Grid</strong> layout system. There is no preprocessor (Sass/Less) and no utility framework (Tailwind).</p>
+        <p>Styles are pure CSS3 using <strong>custom properties (variables)</strong> for theming and a <strong>CSS Grid</strong> layout system — no preprocessor, no utility framework. Files are split by responsibility and loaded in order from <code>index.html</code>.</p>
 
         <table>
-            <thead><tr><th>Section</th><th>Lines (approx.)</th><th>Contents</th></tr></thead>
+            <thead><tr><th>File</th><th>Contents</th></tr></thead>
             <tbody>
-                <tr><td>§1 Variables</td><td>~80</td><td>Dark and light theme tokens: colors, glass, shadows, icons</td></tr>
-                <tr><td>§2 Reset</td><td>~40</td><td>Box-model reset, base typography, scrollbar styling, utilities</td></tr>
-                <tr><td>§3–4 Background/Loader</td><td>~50</td><td>Ambient orbs, loading screen with progress bar</td></tr>
-                <tr><td>§5–9 Layout</td><td>~180</td><td>App wrapper, sticky header, search bar, quick-nav, grid, footer</td></tr>
-                <tr><td>§10 Hero</td><td>~110</td><td>Temperature display, weather icon, sunrise/sunset bar</td></tr>
-                <tr><td>§11 Metrics</td><td>~55</td><td>6-card metrics grid with icon wraps and bar charts</td></tr>
-                <tr><td>§12 AQI</td><td>~70</td><td>SVG ring gauge, pollutant bars, badge coloring</td></tr>
-                <tr><td>§13 Compare</td><td>~55</td><td>Input wraps, VS divider, compare results grid</td></tr>
-                <tr><td>§14 Forecast</td><td>~80</td><td>Hourly scroll and 14-day card scroll containers</td></tr>
-                <tr><td>§15 Animations</td><td>~90</td><td>All @keyframes, stagger delays, reduced-motion support</td></tr>
-                <tr><td>§16 Responsive</td><td>~150</td><td>6 breakpoints: 1200, 1024, 768, 480px + landscape + safe areas</td></tr>
+                <tr><td>css/base.css</td><td>Dark &amp; light theme tokens, reset &amp; typography, ambient orbs, loading screen</td></tr>
+                <tr><td>css/layout.css</td><td>App wrapper, sticky header, search bar, quick-nav, dashboard grid, footer</td></tr>
+                <tr><td>css/components.css</td><td>Hero, metrics, AQI ring, compare, forecast strips <em>plus</em> suggestions dropdown, alerts banner, trend chart, radar map, back-to-top</td></tr>
+                <tr><td>css/responsive.css</td><td>All @keyframes, six breakpoints, reduced-motion support, dynamic <code>body[data-wx]</code> weather-tint themes</td></tr>
             </tbody>
         </table>
 
@@ -688,20 +718,23 @@ git push</pre>
     <section id="config">
         <h2 class="section-title"><i class="fas fa-sliders"></i> Configuration</h2>
         <div class="section-divider"></div>
-        <p>All user-facing configuration is centralised in the <code>CONFIG</code> object and the static arrays at the top of <code>app.js</code>.</p>
+        <p>All user-facing configuration is centralised in the <code>CONFIG</code> object and static arrays at the top of <code>js/config.js</code>.</p>
 
         <table>
             <thead><tr><th>Key</th><th>Type</th><th>Default</th><th>Purpose</th></tr></thead>
             <tbody>
-                <tr><td>CONFIG.isMetric</td><td>boolean</td><td>true</td><td>Temperature unit: true = °C, false = °F</td></tr>
-                <tr><td>CONFIG.favorites</td><td>string[]</td><td>[]</td><td>Saved location strings from localStorage</td></tr>
-                <tr><td>CONFIG.lastLocation</td><td>object</td><td>null</td><td>Most recently loaded location (lat, lon, name)</td></tr>
+                <tr><td>CONFIG.isMetric</td><td>boolean</td><td>true</td><td>Temperature unit: true = °C, false = °F (persisted)</td></tr>
+                <tr><td>CONFIG.favorites</td><td>object[]</td><td>[]</td><td>Saved locations with coordinates: <code>{ id, name, label, lat, lon }</code></td></tr>
+                <tr><td>CONFIG.recents</td><td>object[]</td><td>[]</td><td>Last 6 searched locations, shown in the suggestions dropdown</td></tr>
+                <tr><td>CONFIG.lastLocation</td><td>object</td><td>null</td><td>Most recent location — restored instantly on next visit</td></tr>
+                <tr><td>CONFIG.maxFavorites</td><td>number</td><td>12</td><td>Maximum saved favorites</td></tr>
+                <tr><td>CONFIG.refreshMs</td><td>number</td><td>900000</td><td>Auto-refresh interval (15 minutes)</td></tr>
                 <tr><td>INDIAN_CITIES</td><td>string[]</td><td>15 cities</td><td>Quick-access city chips in the nav bar</td></tr>
                 <tr><td>GLOBAL_CAPITALS</td><td>string[]</td><td>30 capitals</td><td>Dropdown list of world capital cities</td></tr>
             </tbody>
         </table>
 
-        <p>To add more Indian cities or global capitals, simply append to the <code>INDIAN_CITIES</code> or <code>GLOBAL_CAPITALS</code> arrays at the top of <code>app.js</code>.</p>
+        <p>To add more Indian cities or global capitals, simply append to the <code>INDIAN_CITIES</code> or <code>GLOBAL_CAPITALS</code> arrays in <code>js/config.js</code>.</p>
 
         <div class="code-block">
 <pre><span class="comment">// Example: add Siliguri to city chips</span>
